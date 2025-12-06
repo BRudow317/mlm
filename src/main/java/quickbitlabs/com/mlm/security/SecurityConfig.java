@@ -16,10 +16,19 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests((requests) -> requests
                 // 1. Allow Static Resources (Vite usually puts them in /assets)
-                .requestMatchers("/assets/**", "/images/**", "/public/**").permitAll()
+                .requestMatchers("frontend/dist/**",
+                                    "/assets/**", 
+                                    "/images/**", 
+                                    "/public/**"
+                                ).permitAll()
                 
                 // 2. Allow Root files (favicon, manifest, index.html)
-                .requestMatchers("/", "/index.html", "/favicon.ico", "/*.js", "/*.css").permitAll()
+                .requestMatchers("/", 
+                                    "/index.html", 
+                                    "/favicon.ico", 
+                                    "/*.js", 
+                                    "/*.css"
+                                ).permitAll()
                 
                 // 3. Allow Public API endpoints
                 .requestMatchers("/api/public/**").permitAll()
@@ -27,15 +36,16 @@ public class SecurityConfig {
                 // 4. Require Auth for everything else (Admin, etc)
                 .anyRequest().authenticated()
             )
-            .formLogin(Customizer.withDefaults()) // Use default login for now
+            // default login: user/password: user/user
+            .formLogin(Customizer.withDefaults())
             .logout((logout) -> logout.permitAll());
 
         return http.build();
     }
 }
 
-            // "/assets/**",
-            // "/*.js",
-            // "/*.css",
-            // "/index.html",
-            // "/*.jpg"
+// "/assets/**",
+// "/*.js",
+// "/*.css",
+// "/index.html",
+// "/*.jpg"
