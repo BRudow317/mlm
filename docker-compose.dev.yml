@@ -9,4 +9,6 @@ services:
     entrypoint: ["sh", "-c", "tail -f /dev/null"]
 
     volumes:
-      - .:/app       # <--- FIX: This saves your code edits to Windows
+      - .:/app       # Sync folder to app/ dir in container.
+      - /app/target    # 2. ISOLATE the Jar and build files to the container.
+      - /app/frontend/node_modules  # 3. ISOLATE the Node Modules to the container.

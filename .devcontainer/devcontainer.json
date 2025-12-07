@@ -7,6 +7,9 @@
   "service": "mlm-web-server",
   "workspaceFolder": "/app",
   "forwardPorts": [8080],
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
 
   // Override the command so the app doesn't start automatically.
   // We want a shell so we can type './mvnw package' manually.
@@ -15,10 +18,7 @@
 
   "customizations": {
     "vscode": {
-      "extensions": [
-        "vscjava.vscode-java-pack",
-        "vmware.vscode-spring-boot"
-      ]
+      "extensions": []
     }
   },
   // Map the linux user 'spring' to your VS Code user to fix permission errors

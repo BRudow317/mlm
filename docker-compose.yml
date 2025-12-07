@@ -1,7 +1,7 @@
 services:
   mlm-web-server:
     # Custom container name, !!!must match devcontainer.json
-    container_name: mlm-dev-container
+    container_name: mlm-container
     # Instead of looking for an image online, look for a Dockerfile right here (.)
     build: . 
     # Optional: You can still use 'image' to give your built image a custom name
