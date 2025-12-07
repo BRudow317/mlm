@@ -1,0 +1,15 @@
+services:
+  mlm-web-server:
+    # Custom container name, !!!must match devcontainer.json
+    container_name: mlm-dev-container
+    # Instead of looking for an image online, look for a Dockerfile right here (.)
+    build: . 
+    # Optional: You can still use 'image' to give your built image a custom name
+    image: mlm-dev-12-7-25
+    environment:
+      # Inject the AWS endpoint into the variable your app expects
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+      - SPRING_DATASOURCE_USERNAME=${DB_USER}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASS}
+    ports:
+      - "8080:8080"

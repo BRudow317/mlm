@@ -16,7 +16,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests((requests) -> requests
                 // 1. Allow Static Resources (Vite usually puts them in /assets)
-                .requestMatchers("frontend/dist/**",
+                .requestMatchers("/frontend/dist/**",
                                     "/assets/**", 
                                     "/images/**", 
                                     "/public/**"

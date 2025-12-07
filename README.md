@@ -3,8 +3,8 @@
 [miller-land-management.com](https://miller-land-management.com)
 - Design Patterns: SPA, DDD, SOA
 - Frontend: React, Tailwind CSS, Vite
-- Backend: Spring Boot managing the backend services
-- Integration: Spring Boot REST
+- Backend: Spring-Boot & Node.js
+- Integration: Spring-Boot REST
 - Infrastructure: AWS US-East-1
 - Database: PostgreSQL on RDS
 - CI/CD: GitHub
