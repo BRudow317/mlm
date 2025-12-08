@@ -1,0 +1,13 @@
+target
+logs
+.git
+.gitignore
+.gitattributes
+frontend/node_modules
+frontend/dist
+.vscode
+.devcontainer
+.env
+bin
+README.md
+.dockerignore
