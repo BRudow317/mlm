@@ -2,10 +2,11 @@ package quickbitlabs.com.mlm.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.config.Customizer;
 
 @Configuration
 @EnableWebSecurity
@@ -14,38 +15,32 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeHttpRequests((requests) -> requests
-                // 1. Allow Static Resources (Vite usually puts them in /assets)
-                .requestMatchers("/frontend/dist/**",
-                                    "/assets/**", 
-                                    "/images/**", 
-                                    "/public/**"
-                                ).permitAll()
-                
-                // 2. Allow Root files (favicon, manifest, index.html)
-                .requestMatchers("/", 
-                                    "/index.html", 
-                                    "/favicon.ico", 
-                                    "/*.js", 
-                                    "/*.css"
-                                ).permitAll()
-                
-                // 3. Allow Public API endpoints
+            // CSRF off for now; we can tighten later
+            .csrf(AbstractHttpConfigurer::disable)
+
+            .authorizeHttpRequests(auth -> auth
+                // 1. SPA entry + static assets (Vite build copied into classpath:/static)
+                .requestMatchers(
+                    "/",              // SPA entry
+                    "/index.html",
+                    "/assets/**",
+                    "/favicon.ico",
+                    "/manifest.json",
+                    "/robots.txt",
+                    "/*.css",
+                    "/*.js"
+                ).permitAll()
+
+                // 2. Public API endpoints (if you add some)
                 .requestMatchers("/api/public/**").permitAll()
-                
-                // 4. Require Auth for everything else (Admin, etc)
+
+                // 3. Everything else requires auth
                 .anyRequest().authenticated()
             )
-            // default login: user/password: user/user
+
             .formLogin(Customizer.withDefaults())
-            .logout((logout) -> logout.permitAll());
+            .logout(logout -> logout.permitAll());
 
         return http.build();
     }
 }
-
-// "/assets/**",
-// "/*.js",
-// "/*.css",
-// "/index.html",
-// "/*.jpg"

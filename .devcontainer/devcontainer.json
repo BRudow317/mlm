@@ -1,10 +1,9 @@
 {
   "name": "mlm-dev-container",
   "dockerComposeFile": [
-    "../docker-compose.yml",
-    "../docker-compose.dev.yml"
+    "../docker-compose-dev.yml"
   ],
-  "service": "mlm-web-server",
+  "service": "mlm",
   "workspaceFolder": "/app",
   "forwardPorts": [8080],
   "features": {
@@ -13,8 +12,8 @@
 
   // Override the command so the app doesn't start automatically.
   // We want a shell so we can type './mvnw package' manually.
-  "overrideCommand": true,
-  "shutdownAction": "stopCompose",
+  // "overrideCommand": true,
+  // "shutdownAction": "stopCompose",
 
   "customizations": {
     "vscode": {

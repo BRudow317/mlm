@@ -9,14 +9,10 @@ COPY pom.xml ./
 
 RUN chmod +x mvnw
 
-# Pre-fetch dependencies to make builds deterministic & faster
-RUN ./mvnw -q -B -DskipTests dependency:go-offline
-
 # Copy Project, using .dockerignore to exclude files not needed for build
 COPY . .
 
-# Build the Spring Boot JAR
-RUN ./mvnw -q -B -DskipTests package
+RUN ./mvnw -B -DskipTests clean package 
 
 # ---- Runtime stage: production container ----
 FROM eclipse-temurin:21-jre-alpine AS runtime
