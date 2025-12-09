@@ -6,8 +6,9 @@ import Layout from './components/Layout';
 import Home from './pages/Home';
 import About from './pages/About';
 import Services from './pages/Services';
-import Blog from './pages/Blog';
+import Account from './pages/Account';
 import Support from './pages/Support';
+import RequestQuote from './pages/RequestQuote';
 
 function App() {
   return (
@@ -18,8 +19,9 @@ function App() {
             <Route index element={<Home />} />
             <Route path="about" element={<About />} />
             <Route path="services" element={<Services />} />
-            <Route path="blog" element={<Blog />} />
+            <Route path="account" element={<Account />} />
             <Route path="support" element={<Support />} />
+            <Route path="quote" element={<RequestQuote />} />
           </Route>
         </Routes>
       </BrowserRouter>
