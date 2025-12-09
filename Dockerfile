@@ -2,15 +2,10 @@
 FROM eclipse-temurin:21-jdk-jammy AS build
 WORKDIR /app
 
-# Copy Maven Wrapper and config
-COPY mvnw ./
-COPY .mvn .mvn
-COPY pom.xml ./
-
-RUN chmod +x mvnw
-
 # Copy Project, using .dockerignore to exclude files not needed for build
 COPY . .
+
+RUN chmod +x mvnw
 
 RUN ./mvnw -B -DskipTests clean package 
 
