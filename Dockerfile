@@ -1,5 +1,5 @@
 # ---- Build stage: create the single Spring Boot JAR ----
-FROM eclipse-temurin:21-jdk-alpine AS build
+FROM eclipse-temurin:21-jdk-jammy AS build
 WORKDIR /app
 
 # Copy Maven Wrapper and config
@@ -15,10 +15,10 @@ COPY . .
 RUN ./mvnw -B -DskipTests clean package 
 
 # ---- Runtime stage: production container ----
-FROM eclipse-temurin:21-jre-alpine AS runtime
+FROM eclipse-temurin:21-jre-jammy AS runtime
 WORKDIR /app
 
-RUN addgroup -S spring && adduser -S spring -G spring
+RUN addgroup --system spring && adduser --system --ingroup spring spring
 
 # If there is exactly one bootable JAR, this wildcard is safe
 COPY --from=build --chown=spring:spring /app/target/*.jar app.jar

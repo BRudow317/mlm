@@ -6,17 +6,13 @@
   "service": "mlm",
   "workspaceFolder": "/app",
   "forwardPorts": [8080],
+  "postCreateCommand": "cd mlm && chmod +x mvnw && ./mvnw -DskipTests install", // Run Maven installation after container creation.
   "features": {
-    "ghcr.io/devcontainers/features/git:1" : {
-      "version": "latest",
-      "ppa": false
+    "ghcr.io/devcontainers/features/git:1": {
+        "version": "latest",
+        "ppa": "false"
     }
   },
-
-  // Override the command so the app doesn't start automatically.
-  // We want a shell so we can type './mvnw package' manually.
-  // "overrideCommand": true,
-  // "shutdownAction": "stopCompose",
 
   "customizations": {
     "vscode": {

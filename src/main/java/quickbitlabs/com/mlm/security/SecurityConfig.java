@@ -1,12 +1,12 @@
+
 package quickbitlabs.com.mlm.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.config.Customizer;
 
 @Configuration
 @EnableWebSecurity
@@ -15,31 +15,30 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            // CSRF off for now; we can tighten later
-            .csrf(AbstractHttpConfigurer::disable)
-
-            .authorizeHttpRequests(auth -> auth
-                // 1. SPA entry + static assets (Vite build copied into classpath:/static)
-                .requestMatchers(
-                    "/",              // SPA entry
-                    "/index.html",
-                    "/assets/**",
-                    "/favicon.ico",
-                    "/manifest.json",
-                    "/robots.txt",
-                    "/*.css",
-                    "/*.js"
-                ).permitAll()
-
-                // 2. Public API endpoints (if you add some)
+            .authorizeHttpRequests((requests) -> requests
+                // 1. SECURE YOUR DATA (The most important part)
+                // Any request to the API requires login.
+                .requestMatchers("/api/private/**").authenticated() // Example private route
+                .requestMatchers("/api/admin/**").authenticated()
+                
+                // 2. EXPLICIT PUBLIC API
                 .requestMatchers("/api/public/**").permitAll()
 
-                // 3. Everything else requires auth
-                .anyRequest().authenticated()
-            )
+                // 3. ALLOW FRONTEND RESOURCES
+                // Allow Vite assets (hashed JS/CSS usually live here)
+                .requestMatchers("/assets/**").permitAll()
+                // Allow root files
+                .requestMatchers("/favicon.ico", "/index.html", "/manifest.json").permitAll()
 
+                // 4. THE SPA FIX: ALLOW "EVERYTHING ELSE"
+                // If it's not an /api/ route (handled above), it's likely a frontend route 
+                // like /dashboard, /profile, /settings. 
+                // We permit these so the Spring Controller can forward them to index.html.
+                // NOTE: This relies on your API routes being strictly prefixed (e.g. with /api)
+                .anyRequest().permitAll() 
+            )
             .formLogin(Customizer.withDefaults())
-            .logout(logout -> logout.permitAll());
+            .logout((logout) -> logout.permitAll());
 
         return http.build();
     }
