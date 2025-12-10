@@ -32,7 +32,7 @@ const Layout = () => {
 
           {/* Top Nav Links */}
           <nav className="w-full">
-            <ul className="flex items-center gap-2 mx-auto overflow-x-auto snap-x snap-mandatory no-scrollbar justify-center"
+            <ul className="flex items-center gap-2 mx-auto overflow-x-auto snap-x snap-mandatory no-scrollbar justify-center">
               {navItems.map((item) => (
                 <li key={item.name}>
                   <Link
