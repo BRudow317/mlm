@@ -25,7 +25,7 @@ function App() {
             <Route path="account/details" element={<AccountDetails />} />
             <Route path="owner" element={<Owner />} />
             <Route path="support" element={<Support />} />
-            <Route path="quote" element={<RequestQuote />} />
+            <Route path="request-quote" element={<RequestQuote />} />
           </Route>
         </Routes>
       </BrowserRouter>

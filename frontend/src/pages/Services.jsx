@@ -13,7 +13,7 @@ export default function Services() {
           <div key={s.id} className="border border-gray-200 dark:border-gray-700 p-6 rounded-lg bg-white dark:bg-gray-800">
             <h3 className="text-xl font-bold">{s.title}</h3>
             <p className="mt-2 mb-4 text-gray-600 dark:text-gray-300">{s.desc}</p>
-            <a href={`/quote?type=${encodeURIComponent(s.title)}`} className="bg-miller-yellow text-black px-4 py-2 rounded font-semibold w-full sm:w-auto inline-block text-center">
+            <a href={`/request-quote?type=${encodeURIComponent(s.title)}`} className="bg-miller-yellow text-black px-4 py-2 rounded font-semibold w-full sm:w-auto inline-block text-center">
               Request Quote for {s.title}
             </a>
           </div>

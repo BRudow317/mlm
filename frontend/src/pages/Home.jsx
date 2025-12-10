@@ -19,10 +19,10 @@ export default function Home() {
         <div className="space-y-4">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Our Story</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            Miller Excavation started with a single backhoe and a commitment to doing the job right the first time. Over the years, we have grown into a full-service excavation company, serving both residential and commercial clients.
+            Miller Land Management started with a single excavator and a commitment to doing the job right the first time. Over the years, we have grown into a full-service land management company, serving both residential and commercial clients.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            We understand that excavation is the first step in any major project. If the digging isn't precise, the foundation won't hold. That is why we treat every site—whether it's a backyard pool or a commercial lot—with the same level of precision and respect.
+            We understand that excavation is the first step in any major project. If the digging isn't precise, the foundation won't hold. That is why we treat every site, whether it's a backyard pool or a commercial lot, with the same level of precision and respect we would treat our homes.
           </p>
         </div>
         <div className="h-64 w-full rounded-lg overflow-hidden border border-gray-300 dark:border-gray-600">
@@ -52,12 +52,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* CALL TO ACTION */}
-      <div className="bg-miller-yellow text-black p-8 rounded-xl text-center">
-        <h2 className="text-2xl font-bold mb-4">Ready to break ground?</h2>
-        <p className="mb-6 font-medium">Let's discuss your project requirements.</p>
-        <a href="/services" className="bg-black text-white px-8 py-3 rounded-lg font-bold hover:bg-gray-800 transition-colors inline-block">View Our Services</a>
-      </div>
+
     </div>
   );
 }
