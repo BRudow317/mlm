@@ -7,7 +7,7 @@ export default function About() {
       {/* --- HEADER SECTION --- */}
       <div className="text-center space-y-4">
         <h1 className="text-4xl md:text-5xl font-bold text-miller-yellow">
-          About Miller Excavation
+          About Miller Land Management
         </h1>
         <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
           Building the future on a foundation of hard work, honest pricing, and heavy machinery.

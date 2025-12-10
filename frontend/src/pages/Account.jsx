@@ -7,7 +7,11 @@ export default function Account() {
   const onSubmit = (e) => {
     e.preventDefault();
     // TODO: integrate auth API
-    alert(`Logging in as ${form.username}`);
+    // Simulate login, then fetch data for contact
+    const contactId = form.username; // using username as UUID input for demo
+    localStorage.setItem('contactId', contactId);
+    alert(`Logged in as ${form.username}`);
+    window.location.href = '/account/details';
   };
 
   return (
@@ -22,7 +26,10 @@ export default function Account() {
           <label className="block text-sm font-medium mb-1" htmlFor="password">Password</label>
           <input id="password" name="password" type="password" value={form.password} onChange={onChange} className="w-full p-2 border rounded bg-white dark:bg-gray-800" required />
         </div>
-        <button type="submit" className="px-4 py-2 bg-miller-yellow text-black font-semibold rounded hover:opacity-90">Login</button>
+        <div className="flex items-center justify-between">
+          <button type="submit" className="px-4 py-2 bg-miller-yellow text-black font-semibold rounded hover:opacity-90">Login</button>
+          <button type="button" className="text-sm underline text-gray-600 dark:text-gray-300" onClick={() => alert('Recovery link sent if account exists.')}>Forgot username/password?</button>
+        </div>
       </form>
     </div>
   );

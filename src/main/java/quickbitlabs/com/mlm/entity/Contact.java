@@ -1,9 +1,6 @@
 package quickbitlabs.com.mlm.entity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,9 +8,11 @@ import jakarta.persistence.*;
 public class Contact extends BaseEntity {
     private String firstName;
     private String lastName;
-    private String email;
     private String phone;
-    private String address;
+
+    // Foreign references (IDs)
+    private java.util.UUID accountId;
+    private java.util.UUID userId;
 
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
@@ -21,12 +20,13 @@ public class Contact extends BaseEntity {
     public String getLastName() { return lastName; }
     public void setLastName(String lastName) { this.lastName = lastName; }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
 
-    public String getAddress() { return address; }
-    public void setAddress(String address) { this.address = address; }
+    public java.util.UUID getAccountId() { return accountId; }
+    public void setAccountId(java.util.UUID accountId) { this.accountId = accountId; }
+
+    public java.util.UUID getUserId() { return userId; }
+    public void setUserId(java.util.UUID userId) { this.userId = userId; }
+
 }

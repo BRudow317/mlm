@@ -11,6 +11,10 @@ public class Task extends BaseEntity {
     private String statusLabel;
     private String assignedTo;
 
+    // Foreign references (IDs)
+    private java.util.UUID caseId;
+    private java.util.UUID emailId;
+
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
 
@@ -23,4 +27,8 @@ public class Task extends BaseEntity {
 
     public String getAssignedTo() { return assignedTo; }
     public void setAssignedTo(String assignedTo) { this.assignedTo = assignedTo; }
+
+    public java.util.UUID getEmailId() { return emailId; }
+    public void setEmailId(java.util.UUID emailId) { this.emailId = emailId; }
+
 }

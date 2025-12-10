@@ -5,22 +5,13 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "emails")
 public class Email extends BaseEntity {
-    private String fromAddress;
-    private String toAddress;
-    private String subject;
-    @Column(length = 4000)
-    private String body;
+    private String email;
+    private java.util.UUID contactId;
 
-    public String getFromAddress() { return fromAddress; }
-    public void setFromAddress(String fromAddress) { this.fromAddress = fromAddress; }
+    public String getToAddress() { return email; }
+    public void setToAddress(String email) { this.email = email; }
 
-    public String getToAddress() { return toAddress; }
-    public void setToAddress(String toAddress) { this.toAddress = toAddress; }
-
-    public String getSubject() { return subject; }
-    public void setSubject(String subject) { this.subject = subject; }
-
-    public String getBody() { return body; }
-    public void setBody(String body) { this.body = body; }
+    public java.util.UUID getContactId() { return contactId; }
+    public void setContactId(java.util.UUID contactId) { this.contactId = contactId; }
 
 }

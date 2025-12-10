@@ -1,4 +1,5 @@
 import { ShieldCheck, HardHat, Clock } from 'lucide-react';
+// removed missing image import
 
 export default function Home() {
   return (
@@ -6,7 +7,7 @@ export default function Home() {
       {/* HEADER SECTION (without the word "About") */}
       <div className="text-center space-y-4">
         <h1 className="text-4xl md:text-5xl font-bold text-miller-yellow">
-          About Miller Excavation
+          Miller Land Management
         </h1>
         <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
           Building the future on a foundation of hard work, honest pricing, and heavy machinery.
@@ -24,8 +25,8 @@ export default function Home() {
             We understand that excavation is the first step in any major project. If the digging isn't precise, the foundation won't hold. That is why we treat every site—whether it's a backyard pool or a commercial lot—with the same level of precision and respect.
           </p>
         </div>
-        <div className="h-64 w-full bg-gray-300 dark:bg-gray-700 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-400 dark:border-gray-600">
-          <span className="text-gray-500 dark:text-gray-400 font-medium">[Insert Team/Equipment Photo Here]</span>
+        <div className="h-64 w-full rounded-lg overflow-hidden border border-gray-300 dark:border-gray-600">
+          {/* Image removed because file is missing */}
         </div>
       </div>
 

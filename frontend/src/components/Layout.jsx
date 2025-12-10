@@ -27,8 +27,8 @@ const Layout = () => {
         <div className="flex items-center gap-6">
           {/* Logo / Brand Name */}
           <div className="flex items-center gap-2 font-bold text-xl tracking-tight text-miller-yellow">
-            <img src={MlmLogo} alt="Miller Excavation Logo" className="h-8 w-8 rounded-sm" />
-            <span>Miller Excavation</span>
+            <img src={MlmLogo} alt="Miller Land Management Logo" className="h-8 w-8 rounded-sm" />
+            <span>Miller Land Management</span>
           </div>
           {/* Top Nav Links */}
           <nav className="flex-1">
@@ -65,7 +65,11 @@ const Layout = () => {
 
         {/* --- MAIN CONTENT AREA --- */}
         <main className="flex-1 p-6 overflow-auto">
-          <div className="max-w-4xl mx-auto bg-white/90 dark:bg-gray-800/90 rounded-xl shadow-xl p-6 backdrop-blur-sm">
+          <div className="max-w-4xl mx-auto bg-white/60 dark:bg-gray-800/60 rounded-xl shadow-xl p-6 backdrop-blur-sm">
+            <div className="flex items-center gap-3 mb-4">
+              <img src={MlmLogo} alt="Miller Land Management Logo" className="h-10 w-10 rounded-sm" />
+              <span className="font-bold">Miller Land Management</span>
+            </div>
             <Outlet />
           </div>
         </main>

@@ -10,6 +10,8 @@ public class Case extends BaseEntity {
     private String description;
     private String priority;
     private String statusLabel;
+    private Float budget;
+    private Float offeredPrice;
 
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
@@ -22,5 +24,4 @@ public class Case extends BaseEntity {
 
     public String getStatusLabel() { return statusLabel; }
     public void setStatusLabel(String statusLabel) { this.statusLabel = statusLabel; }
-
 }
