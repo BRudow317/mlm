@@ -2,7 +2,7 @@
 ### Author: Blaine Rudow
 [miller-land-management.com](https://miller-land-management.com)
 - Design Patterns: SPA, DDD, SOA, Single Artifact Deployment
-- Frontend: React, Tailwind CSS, Vite
+- Frontend: React, Vite, BaseUI(MUI), JSON-Server, Axios, Redux, React-Router, Standard JS CSS
 - Backend: Spring-Boot & Node.js
 - Integration: Spring-Boot REST
 - Infrastructure: AWS US-East-1

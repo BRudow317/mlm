@@ -1,0 +1,99 @@
+{
+  "JSONServer": {
+    "commands": {
+      "startupWindows": "npx json-server db.json --port 8008",
+      "startupBash": "json-server db.json --port 8008",
+      "startupWithMiddleware": "npx json-server db.json --port 8008 --middlewares ./middleware.js",
+      "startupWithStatus": "npx json-server db.json --port 8008 --status 200"
+    },
+    "options": {
+      "port": 8008,
+      "middleware": "--middlewares pathto/middleware.js",
+      "status": "--status(200|201|400|404|500)"
+    }
+  },
+  "google": [
+    {
+      "lat": 39.775819,
+      "lng": -86.25602239999999,
+      "address": "710 Pioneer Woods Dr, Indianapolis, IN 46224, USA"
+    },
+    {
+      "lat": 39.768403,
+      "lng": -86.158068,
+      "address": "Indianapolis, IN, USA"
+    }
+  ],
+  "assets": [
+    {
+      "id": 1,
+      "name": "Northern Timber Plot",
+      "type": "Land",
+      "status": "Active"
+    },
+    {
+      "id": 2,
+      "name": "Riverside Acres",
+      "type": "Property",
+      "status": "Pending"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "Admin User",
+      "role": "SuperAdmin"
+    }
+  ],
+  "address": [
+    {
+      "id": 1,
+      "street": "123 Forest Lane",
+      "city": "Woodsville",
+      "state": "OR",
+      "zip": "97035"
+    },
+    {
+      "id": "e950",
+      "streetAddress": "",
+      "aptSuite": "",
+      "city": "",
+      "stateProvince": "",
+      "postalCode": "",
+      "country": ""
+    },
+    {
+      "id": "9362",
+      "streetAddress": "123 ez st",
+      "aptSuite": "",
+      "city": "Indy",
+      "stateProvince": "MI",
+      "postalCode": "51555",
+      "country": "United States"
+    },
+    {
+      "id": "fc3b",
+      "streetAddress": "",
+      "city": "",
+      "stateProvince": "",
+      "postalCode": "",
+      "country": "United States"
+    },
+    {
+      "id": "6bfd",
+      "streetAddress": "",
+      "city": "",
+      "stateProvince": "",
+      "postalCode": "",
+      "country": "United States"
+    },
+    {
+      "id": "4653",
+      "streetAddress": "test",
+      "city": "test",
+      "stateProvince": "test",
+      "postalCode": "test",
+      "country": "United States"
+    }
+  ]
+}

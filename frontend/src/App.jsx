@@ -1,36 +1,32 @@
+import React from "react";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ThemeProvider } from './context/ThemeContext';
-import Layout from './components/Layout';
+import { ThemeProvider, ThemeDomSync } from './themes/ThemeContext';
+import Layout from './layouts/Layout';
+import { Home, Services, Knowledge, Account } from './pages';
+import { ROUTES } from './api';
+import './themes/Styles/GlobalTokens.css';
 
-// Import Pages
-import Home from './pages/Home';
-import About from './pages/About';
-import Services from './pages/Services';
-import Account from './pages/Account';
-import AccountDetails from './pages/AccountDetails';
-import Owner from './pages/Owner';
-import Support from './pages/Support';
-import RequestQuote from './pages/RequestQuote';
-
-function App() {
-  return (
-    <ThemeProvider>
+createRoot(document.getElementById("root")).render(
+  <>
+    <React.StrictMode>
+      <ThemeProvider>
+      <ThemeDomSync />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="about" element={<About />} />
-            <Route path="services" element={<Services />} />
-            <Route path="account" element={<Account />} />
-            <Route path="account/details" element={<AccountDetails />} />
-            <Route path="owner" element={<Owner />} />
-            <Route path="support" element={<Support />} />
-            <Route path="request-quote" element={<RequestQuote />} />
-          </Route>
+            {/* Parent Route controls the Layout */}
+            <Route path="/" element={<Layout />}>
+               {/* Index element controls the default page */}
+               <Route index element={<Home />} />
+               {/* These routes display to the user and map to your different pages. */}
+               <Route path={ROUTES.HOME} element={<Home />} />
+               <Route path={ROUTES.SERVICES} element={<Services />} />
+               <Route path={ROUTES.KNOWLEDGE} element={<Knowledge />} />
+               <Route path={ROUTES.ACCOUNT} element={<Account />} />
+            </Route>
         </Routes>
       </BrowserRouter>
-    </ThemeProvider>
-  );
-}
-
-export default App;
+      </ThemeProvider> 
+    </React.StrictMode>
+  </>
+);
