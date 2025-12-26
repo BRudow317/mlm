@@ -51,3 +51,9 @@ docker-compose.override.yml
 ### Documentation ###
 # If you generate large docs or diagrams you don't want in the repo
 **/externalResources/
+
+### Frontend ###
+frontend/dist/
+frontend/build/
+frontend/.env
+frontend/
