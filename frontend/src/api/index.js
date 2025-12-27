@@ -24,4 +24,6 @@ export {
 export { authAPI } from "./security/auth.api";
 
 // Business services
-export { quoteAPI } from "./service/quote.api";
+// Migrated to features/contact-form - import from there instead
+// export { quoteAPI } from "./service/quote.api"; // DEPRECATED - use contactAPI from features/contact-form
+export { contactAPI } from "../features/contact-form";

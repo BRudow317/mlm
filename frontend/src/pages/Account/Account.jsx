@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PageSection from "../../layouts/PageSection";
-import MasterFormStyles from "../Home/components/MasterContactForm/MasterFormStyles.module.css";
+import MasterFormStyles from "../../features/contact-form/components/ContactForm.module.css";
 
 const AccountPage = () => {
   const [credentials, setCredentials] = useState({

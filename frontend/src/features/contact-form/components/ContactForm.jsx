@@ -1,17 +1,19 @@
-// MasterContactForm.jsx
+// ContactForm.jsx
+// Created: 2025-12-27
+// Migrated from: pages/Home/components/MasterContactForm/MasterContactForm.jsx
 /* eslint-disable react-hooks/refs */ // TODO: Refactor addressAutocomplete to avoid ref access during render
 import React, { useEffect, useRef, useState } from "react";
 import { MapPin, Search, AlertTriangle, ChevronDown } from "lucide-react";
-import MasterFormStyles from "./MasterFormStyles.module.css";
-import { DEFAULT_SERVICES } from "../../../..";
-import { useAddressAutocomplete, DEV_API_KEY } from "../../../..";
+import ContactFormStyles from "./ContactForm.module.css";
+import { DEFAULT_SERVICES } from "../../../utils/Constants";
+import { useAddressAutocomplete } from "../../../hooks/useAddressAutocomplete";
 
 /**
  * Main Form Component
- * - Uses CSS Module (MasterFormStyles.module.css)
+ * - Uses CSS Module (ContactForm.module.css)
  * - No global class strings
  */
-export function MasterContactForm({ serviceType, mergeTop = false }) {
+export function ContactForm({ serviceType, mergeTop = false }) {
   const shellRef = useRef(null);
   const iframeContainerRef = useRef(null);
   const customMessageRef = useRef(null);
@@ -47,13 +49,13 @@ export function MasterContactForm({ serviceType, mergeTop = false }) {
 
   useEffect(() => {
   setShowCustomMessage(
-    formData.serviceType === "" || formData.serviceType === "Describe" 
+    formData.serviceType === "" || formData.serviceType === "Describe"
   );
 }, [formData.serviceType]);
 
   // Populate customMessage when serviceType prop changes (from clicking a service card)
   useEffect(() => {
-    console.log("MasterContactForm received serviceType:", serviceType);
+    console.log("ContactForm received serviceType:", serviceType);
     if (serviceType && serviceType.trim()) {
       console.log("Populating form with service:", serviceType);
       setShowCustomMessage(true);
@@ -166,17 +168,17 @@ export function MasterContactForm({ serviceType, mergeTop = false }) {
   if (submitted) {
     return (
       <section
-        className={MasterFormStyles.mlmMasterFormShell}
+        className={ContactFormStyles.mlmMasterFormShell}
         aria-label="Form submitted"
       >
-        <div className={MasterFormStyles.mlmSuccessCard}>
-          <div className={MasterFormStyles.mlmSuccessIcon} aria-hidden="true">
+        <div className={ContactFormStyles.mlmSuccessCard}>
+          <div className={ContactFormStyles.mlmSuccessIcon} aria-hidden="true">
             ✓
           </div>
-          <h2 className={MasterFormStyles.mlmSuccessTitle}>
+          <h2 className={ContactFormStyles.mlmSuccessTitle}>
             Form Submitted Successfully!
           </h2>
-          <p className={MasterFormStyles.mlmSuccessMessage}>
+          <p className={ContactFormStyles.mlmSuccessMessage}>
             {formData.isEmergency
               ? "We'll contact you as soon as possible to assist."
               : "Thank you for your submission. We'll get back to you soon."}
@@ -184,7 +186,7 @@ export function MasterContactForm({ serviceType, mergeTop = false }) {
           <button
             type="button"
             onClick={() => setSubmitted(false)}
-            className={MasterFormStyles.mlmSuccessButton}
+            className={ContactFormStyles.mlmSuccessButton}
           >
             Submit Another Request
           </button>
@@ -197,24 +199,24 @@ export function MasterContactForm({ serviceType, mergeTop = false }) {
     <section
       id="get-quote"
       className={[
-        MasterFormStyles.mlmMasterFormShell,
-        mergeTop ? MasterFormStyles.mlmMasterFormShellMergedTop : ""
+        ContactFormStyles.mlmMasterFormShell,
+        mergeTop ? ContactFormStyles.mlmMasterFormShellMergedTop : ""
       ].join(" ")}
       ref={shellRef}
       aria-label="Service request form"
     >
-      <header className={MasterFormStyles.mlmMasterFormHeader}>
-        
-        <h4 className={MasterFormStyles.mlmMasterFormSubtitle}>
+      <header className={ContactFormStyles.mlmMasterFormHeader}>
+
+        <h4 className={ContactFormStyles.mlmMasterFormSubtitle}>
           Fill out the form to request a service quote
         </h4>
       </header>
 
-      <div className={MasterFormStyles.mlmFormStack}>
+      <div className={ContactFormStyles.mlmFormStack}>
         {/* Name */}
-        <div className={MasterFormStyles.mlmField}>
-          <label htmlFor="name" className={MasterFormStyles.mlmLabel}>
-            Full Name <span className={MasterFormStyles.mlmRequired}>*</span>
+        <div className={ContactFormStyles.mlmField}>
+          <label htmlFor="name" className={ContactFormStyles.mlmLabel}>
+            Full Name <span className={ContactFormStyles.mlmRequired}>*</span>
           </label>
           <input
             type="text"
@@ -222,21 +224,21 @@ export function MasterContactForm({ serviceType, mergeTop = false }) {
             name="name"
             value={formData.name}
             onChange={handleInputChange}
-            className={`${MasterFormStyles.mlmInput} ${
-              errors.name ? MasterFormStyles.mlmInputError : ""
+            className={`${ContactFormStyles.mlmInput} ${
+              errors.name ? ContactFormStyles.mlmInputError : ""
             }`}
             placeholder="Contact Name"
             autoComplete="name"
           />
           {errors.name && (
-            <p className={MasterFormStyles.mlmErrorText}>{errors.name}</p>
+            <p className={ContactFormStyles.mlmErrorText}>{errors.name}</p>
           )}
         </div>
 
         {/* Email */}
-        <div className={MasterFormStyles.mlmField}>
-          <label htmlFor="email" className={MasterFormStyles.mlmLabel}>
-            Email Address <span className={MasterFormStyles.mlmRequired}>*</span>
+        <div className={ContactFormStyles.mlmField}>
+          <label htmlFor="email" className={ContactFormStyles.mlmLabel}>
+            Email Address <span className={ContactFormStyles.mlmRequired}>*</span>
           </label>
           <input
             type="email"
@@ -244,21 +246,21 @@ export function MasterContactForm({ serviceType, mergeTop = false }) {
             name="email"
             value={formData.email}
             onChange={handleInputChange}
-            className={`${MasterFormStyles.mlmInput} ${
-              errors.email ? MasterFormStyles.mlmInputError : ""
+            className={`${ContactFormStyles.mlmInput} ${
+              errors.email ? ContactFormStyles.mlmInputError : ""
             }`}
             placeholder="Contact Email"
             autoComplete="email"
           />
           {errors.email && (
-            <p className={MasterFormStyles.mlmErrorText}>{errors.email}</p>
+            <p className={ContactFormStyles.mlmErrorText}>{errors.email}</p>
           )}
         </div>
 
         {/* Phone */}
-        <div className={MasterFormStyles.mlmField}>
-          <label htmlFor="phone" className={MasterFormStyles.mlmLabel}>
-            Phone Number <span className={MasterFormStyles.mlmRequired}>*</span>
+        <div className={ContactFormStyles.mlmField}>
+          <label htmlFor="phone" className={ContactFormStyles.mlmLabel}>
+            Phone Number <span className={ContactFormStyles.mlmRequired}>*</span>
           </label>
           <input
             type="tel"
@@ -266,23 +268,23 @@ export function MasterContactForm({ serviceType, mergeTop = false }) {
             name="phone"
             value={formData.phone}
             onChange={handleInputChange}
-            className={`${MasterFormStyles.mlmInput} ${
-              errors.phone ? MasterFormStyles.mlmInputError : ""
+            className={`${ContactFormStyles.mlmInput} ${
+              errors.phone ? ContactFormStyles.mlmInputError : ""
             }`}
             placeholder="Contact Phone"
             autoComplete="tel"
             inputMode="tel"
           />
           {errors.phone && (
-            <p className={MasterFormStyles.mlmErrorText}>{errors.phone}</p>
+            <p className={ContactFormStyles.mlmErrorText}>{errors.phone}</p>
           )}
         </div>
 
         {/* Service Type */}
-        <div className={MasterFormStyles.mlmField}>
-          <div className={MasterFormStyles.mlmFieldRow}>
-            <label htmlFor="serviceType" className={MasterFormStyles.mlmLabel}>
-              Service Type <span className={MasterFormStyles.mlmRequired}>*</span>
+        <div className={ContactFormStyles.mlmField}>
+          <div className={ContactFormStyles.mlmFieldRow}>
+            <label htmlFor="serviceType" className={ContactFormStyles.mlmLabel}>
+              Service Type <span className={ContactFormStyles.mlmRequired}>*</span>
             </label>
             {/* TODO: Restore dropdown toggle button once dropdown service selection is fully implemented */}
             {/* <button
@@ -296,21 +298,21 @@ export function MasterContactForm({ serviceType, mergeTop = false }) {
                   customMessage: "",
                 }));
               }}
-              className={MasterFormStyles.mlmLinkButton}
+              className={ContactFormStyles.mlmLinkButton}
             >
               {showCustomMessage ? "Show dropdown" : "Custom message"}
             </button> */}
           </div>
 
           {!showCustomMessage ? (
-            <div className={MasterFormStyles.mlmSelectWrap}>
+            <div className={ContactFormStyles.mlmSelectWrap}>
               <select
   id="serviceType"
   name="serviceType"
   value={formData.serviceType}
   onChange={handleInputChange}
-  className={`${MasterFormStyles.mlmSelect} ${
-    errors.serviceType ? MasterFormStyles.mlmInputError : ""
+  className={`${ContactFormStyles.mlmSelect} ${
+    errors.serviceType ? ContactFormStyles.mlmInputError : ""
   }`}
 >
   <option value="">Select a service...</option>
@@ -326,13 +328,13 @@ export function MasterContactForm({ serviceType, mergeTop = false }) {
 
               <ChevronDown
                 ref={customMessageRef}
-                className={MasterFormStyles.mlmSelectIcon}
+                className={ContactFormStyles.mlmSelectIcon}
                 size={20}
                 aria-hidden="true"
               />
 
               {errors.serviceType && (
-                <p className={MasterFormStyles.mlmErrorText}>
+                <p className={ContactFormStyles.mlmErrorText}>
                   {errors.serviceType}
                 </p>
               )}
@@ -345,13 +347,13 @@ export function MasterContactForm({ serviceType, mergeTop = false }) {
                 value={formData.customMessage}
                 onChange={handleInputChange}
                 rows={4}
-                className={`${MasterFormStyles.mlmTextarea} ${
-                  errors.customMessage ? MasterFormStyles.mlmInputError : ""
+                className={`${ContactFormStyles.mlmTextarea} ${
+                  errors.customMessage ? ContactFormStyles.mlmInputError : ""
                 }`}
                 placeholder="Please describe how we can help..."
               />
               {errors.customMessage && (
-                <p className={MasterFormStyles.mlmErrorText}>
+                <p className={ContactFormStyles.mlmErrorText}>
                   {errors.customMessage}
                 </p>
               )}
@@ -360,15 +362,15 @@ export function MasterContactForm({ serviceType, mergeTop = false }) {
         </div>
 
         {/* Address */}
-        <div className={MasterFormStyles.mlmField}>
-          <label htmlFor="address" className={MasterFormStyles.mlmLabel}>
-            Service Address <span className={MasterFormStyles.mlmRequired}>*</span>
+        <div className={ContactFormStyles.mlmField}>
+          <label htmlFor="address" className={ContactFormStyles.mlmLabel}>
+            Service Address <span className={ContactFormStyles.mlmRequired}>*</span>
           </label>
 
-          <div className={MasterFormStyles.mlmAddressWrap}>
+          <div className={ContactFormStyles.mlmAddressWrap}>
             <Search
               size={18}
-              className={MasterFormStyles.mlmSearchIcon}
+              className={ContactFormStyles.mlmSearchIcon}
               aria-hidden="true"
             />
             <input
@@ -380,9 +382,9 @@ export function MasterContactForm({ serviceType, mergeTop = false }) {
               onFocus={addressAutocomplete.handleInputFocus}
               onBlur={addressAutocomplete.handleInputBlur}
               onKeyDown={addressAutocomplete.handleKeyDown}
-              className={`${MasterFormStyles.mlmInput} ${
-                MasterFormStyles.mlmInputWithIcon
-              } ${errors.address ? MasterFormStyles.mlmInputError : ""}`}
+              className={`${ContactFormStyles.mlmInput} ${
+                ContactFormStyles.mlmInputWithIcon
+              } ${errors.address ? ContactFormStyles.mlmInputError : ""}`}
               aria-autocomplete="list"
               aria-controls={addressAutocomplete.listboxId}
               aria-expanded={addressAutocomplete.suggestions.length > 0}
@@ -390,9 +392,9 @@ export function MasterContactForm({ serviceType, mergeTop = false }) {
 
             {(addressAutocomplete.suggestions.length > 0 ||
               addressAutocomplete.isLoading) && (
-              <div className={MasterFormStyles.mlmSuggestionsPanel}>
+              <div className={ContactFormStyles.mlmSuggestionsPanel}>
                 {addressAutocomplete.isLoading && (
-                  <div className={MasterFormStyles.mlmSuggestionsLoading}>
+                  <div className={ContactFormStyles.mlmSuggestionsLoading}>
                     Searching...
                   </div>
                 )}
@@ -404,9 +406,9 @@ export function MasterContactForm({ serviceType, mergeTop = false }) {
                         key={`${suggestion.placeId}-${index}`}
                         role="option"
                         aria-selected={index === addressAutocomplete.activeIndex}
-                        className={`${MasterFormStyles.mlmSuggestionRow} ${
+                        className={`${ContactFormStyles.mlmSuggestionRow} ${
                           index === addressAutocomplete.activeIndex
-                            ? MasterFormStyles.mlmSuggestionRowActive
+                            ? ContactFormStyles.mlmSuggestionRowActive
                             : ""
                         }`}
                         onMouseDown={(e) => {
@@ -416,10 +418,10 @@ export function MasterContactForm({ serviceType, mergeTop = false }) {
                       >
                         <MapPin
                           size={18}
-                          className={MasterFormStyles.mlmPinIcon}
+                          className={ContactFormStyles.mlmPinIcon}
                           aria-hidden="true"
                         />
-                        <span className={MasterFormStyles.mlmSuggestionText}>
+                        <span className={ContactFormStyles.mlmSuggestionText}>
                           {suggestion.address}
                         </span>
                       </div>
@@ -431,34 +433,34 @@ export function MasterContactForm({ serviceType, mergeTop = false }) {
           </div>
 
           {errors.address && (
-            <p className={MasterFormStyles.mlmErrorText}>{errors.address}</p>
+            <p className={ContactFormStyles.mlmErrorText}>{errors.address}</p>
           )}
           {/* Emergency + Submit */}
-        <div className={MasterFormStyles.mlmFooterRow}>
-          <label className={MasterFormStyles.mlmToggleLabel}>
-            <span className={MasterFormStyles.mlmToggleWrap}>
+        <div className={ContactFormStyles.mlmFooterRow}>
+          <label className={ContactFormStyles.mlmToggleLabel}>
+            <span className={ContactFormStyles.mlmToggleWrap}>
               <input
                 type="checkbox"
                 name="isEmergency"
                 checked={formData.isEmergency}
                 onChange={handleInputChange}
-                className={MasterFormStyles.mlmToggleInput}
+                className={ContactFormStyles.mlmToggleInput}
               />
-              <span className={MasterFormStyles.mlmToggleTrack} aria-hidden="true" />
-              <span className={MasterFormStyles.mlmToggleThumb} aria-hidden="true" />
+              <span className={ContactFormStyles.mlmToggleTrack} aria-hidden="true" />
+              <span className={ContactFormStyles.mlmToggleThumb} aria-hidden="true" />
             </span>
 
-            <span className={MasterFormStyles.mlmEmergencyTextWrap}>
+            <span className={ContactFormStyles.mlmEmergencyTextWrap}>
               {formData.isEmergency && (
                 <AlertTriangle
                   size={18}
-                  className={MasterFormStyles.mlmEmergencyIcon}
+                  className={ContactFormStyles.mlmEmergencyIcon}
                   aria-hidden="true"
                 />
               )}
               <span
-                className={`${MasterFormStyles.mlmEmergencyText} ${
-                  formData.isEmergency ? MasterFormStyles.mlmEmergencyTextOn : ""
+                className={`${ContactFormStyles.mlmEmergencyText} ${
+                  formData.isEmergency ? ContactFormStyles.mlmEmergencyTextOn : ""
                 }`}
               >
                 Is this an Urgent Request?
@@ -470,17 +472,17 @@ export function MasterContactForm({ serviceType, mergeTop = false }) {
             type="button"
             onClick={handleSubmit}
             className={[
-              MasterFormStyles.mlmSubmitButton,
+              ContactFormStyles.mlmSubmitButton,
               formData.isEmergency
-                ? MasterFormStyles.mlmSubmitEmergency
+                ? ContactFormStyles.mlmSubmitEmergency
                 : "mlmItem", // use your global override here
             ].join(" ")}
           >
             {formData.isEmergency ? "Submit Urgent Request" : "Submit Request"}
           </button>
         </div>
-          <div className={MasterFormStyles.mlmMapShell}>
-            <div ref={addressAutocomplete.mapRef} className={MasterFormStyles.mlmMap} />
+          <div className={ContactFormStyles.mlmMapShell}>
+            <div ref={addressAutocomplete.mapRef} className={ContactFormStyles.mlmMap} />
           </div>
 
           <div style={{ marginTop: "16px" }} ref={iframeContainerRef}>
@@ -499,7 +501,7 @@ export function MasterContactForm({ serviceType, mergeTop = false }) {
           </div>
         </div>
 
-        
+
       </div>
     </section>
   );

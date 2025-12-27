@@ -11,7 +11,7 @@ import {
   HomeCarouselCard
 } from "./components/CarouselCard/HomeCarouselCard";
 //import { CustomerFormExample } from "./components/CustomerForm/CustomerForm.example.jsx";
-import { MasterContactForm } from "./components/MasterContactForm/MasterContactForm.jsx";
+import { ContactForm } from "../../features/contact-form";
 
 
 
@@ -66,7 +66,7 @@ export default function Home() {
               allowFullScreen
             />
           </div>
-          <MasterContactForm 
+          <ContactForm
             serviceType={selectedService}
             mergeTop
           />

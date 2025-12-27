@@ -22,7 +22,7 @@
 
 /* Grid responsiveness (requires className={css.grid} on the grid wrapper) */
 /* .grid {
-  Intentionally empty: the actual grid layout is defined in object styles 
+  Intentionally empty: the actual grid layout is defined in object styles
 }*/
 
 @media (max-width: 720px) {
