@@ -28,18 +28,12 @@ target/
 *.iml
 *.ipr
 
-### Frontend / Node ###
-node_modules/
-npm-debug.log
-yarn-error.log
-dist/
-build/
-
 ### System / Env ###
 .DS_Store
 Thumbs.db
 .env
 .env.local
+*.env
 .env.development
 .env.test
 .env.production
@@ -51,9 +45,16 @@ docker-compose.override.yml
 ### Documentation ###
 # If you generate large docs or diagrams you don't want in the repo
 **/externalResources/
+.AI/
+Project Docs/
+AGENTS.md
 
 ### Frontend ###
 frontend/dist/
 frontend/build/
 frontend/.env
-frontend/
+node_modules/
+npm-debug.log
+yarn-error.log
+dist/
+build/
