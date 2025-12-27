@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./PageSection.module.css";
+import styles from "./LayoutStyles.module.css";
 
 const PageSection = ({
   heading,

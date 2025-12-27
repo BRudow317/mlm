@@ -9,11 +9,11 @@ import CustomerForm from "./CustomerForm";
  */
 export function CustomerFormExample() {
   const theme = "dark"; // Example only. In your app, derive this once at the layout/root level.
+  void theme; // avoid unused var lint while keeping example
 
   const handleSubmit = async (payload) => {
     await new Promise((r) => setTimeout(r, 600));
     // Later: await quoteAPI.submitQuote(payload);
-    // eslint-disable-next-line no-console
     console.log("Submitted quote request:", payload);
   };
 

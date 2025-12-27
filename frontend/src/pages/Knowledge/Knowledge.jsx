@@ -1,6 +1,6 @@
 import React from "react";
 import { useTheme } from "../../themes/ThemeContext";
-import PageSection from "../../components/PageSection/PageSection";
+import PageSection from "../../layouts/PageSection";
 import { MlmLogo } from "../../assets";
 
 const knowledgeHighlights = [

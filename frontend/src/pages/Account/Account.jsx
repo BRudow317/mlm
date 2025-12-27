@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import PageSection from "../../components/PageSection/PageSection";
+import PageSection from "../../layouts/PageSection";
 import MasterFormStyles from "../Home/components/MasterContactForm/MasterFormStyles.module.css";
 
 const AccountPage = () => {

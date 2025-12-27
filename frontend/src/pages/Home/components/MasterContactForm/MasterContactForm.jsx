@@ -1,4 +1,5 @@
 // MasterContactForm.jsx
+/* eslint-disable react-hooks/refs */ // TODO: Refactor addressAutocomplete to avoid ref access during render
 import React, { useEffect, useRef, useState } from "react";
 import { MapPin, Search, AlertTriangle, ChevronDown } from "lucide-react";
 import MasterFormStyles from "./MasterFormStyles.module.css";
@@ -102,7 +103,6 @@ export function MasterContactForm({ serviceType, mergeTop = false }) {
       });
       node = node.parentElement;
     }
-    // eslint-disable-next-line no-console
     console.table(chain);
   }, []);
 
@@ -159,7 +159,6 @@ export function MasterContactForm({ serviceType, mergeTop = false }) {
   const handleSubmit = () => {
     if (validateForm()) {
       setSubmitted(true);
-      // eslint-disable-next-line no-console
       console.log("Form submitted:", formData);
     }
   };

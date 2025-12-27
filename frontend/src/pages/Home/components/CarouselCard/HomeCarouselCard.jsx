@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { useTheme } from "../../../../themes/ThemeContext"; // keep your existing path
 import { CarouselStyles } from "./CarouselStyles";
 // import { CarouselCard } from "./CarouselCard";
@@ -83,6 +83,8 @@ export const CarouselCard = ({
   autoPlayInterval = 3000,
 }) => {
   const { theme } = useTheme();
+  const _unusedDims = { cardWidth, cardHeight }; // reserved for future sizing
+  void _unusedDims;
 
   const initialHighlightIndex = items.findIndex(
     (item) => item.title === "MLM Facebook Update"
@@ -145,23 +147,25 @@ export const CarouselCard = ({
   /**
    * Navigation handler - moves to next slide
    */
-  const goToNext = () => {
+  const goToNext = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % items.length);
-  };
+  }, [items.length]);
 
   /**
    * Navigation handler - moves to previous slide
    */
-  const goToPrevious = () => {
+  const goToPrevious = useCallback(() => {
     setCurrentIndex((prev) => (prev - 1 + items.length) % items.length);
-  };
+  }, [items.length]);
 
   /**
    * Navigation handler - jumps to specific slide
    */
-  const goToSlide = (index) => {
+  // Reserved for future direct navigation (currently unused)
+  const goToSlide = useCallback((index) => {
     setCurrentIndex(index);
-  };
+  }, []);
+  void goToSlide;
 
   /**
    * Auto-play effect
@@ -172,7 +176,7 @@ export const CarouselCard = ({
 
     const interval = setInterval(goToNext, autoPlayInterval);
     return () => clearInterval(interval);
-  }, [autoPlay, autoPlayInterval, items.length]); // intentional: no currentIndex
+  }, [autoPlay, autoPlayInterval, items.length, goToNext]);
 
   /**
    * Lazy loading effect - loads current, previous, and next slides

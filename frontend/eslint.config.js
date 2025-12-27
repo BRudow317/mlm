@@ -6,7 +6,8 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 export default [
   // 1. Global Ignores (Must be its own object with just 'ignores')
   {
-    ignores: ['dist', 'bin', 'node_modules', 'coverage', 'public']
+    ignores: ['dist', 'bin', 'bin/**', 'node_modules', 'node_modules/**',
+       'coverage', 'public', 'library', 'library/**'],
   },
 
   // 2. Base JavaScript Recommendations

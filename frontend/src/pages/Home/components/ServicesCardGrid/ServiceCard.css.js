@@ -37,7 +37,6 @@ export function ServiceCardStyles({ isHovered, isSmallScreen }) {
       backgroundColor: "var(--GlassyBackground)",
       backdropFilter: "var(--BackBlur)",
       WebkitBackdropFilter: "var(--WebkitBackBlur)",
-      boxShadow: "var(--GlassyBoxShadow)",
       boxShadow: isHovered
         ? "0 10px 26px rgba(0,0,0,0.18)"
         : "0 6px 18px rgba(0,0,0,0.12)",

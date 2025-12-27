@@ -19,7 +19,7 @@ export function ServicesCardGrid({
   heading = "Services",
 }) {
   const { theme } = useTheme();
-  const styles = useMemo(() => ServicesCardGridStyles());
+  const styles = useMemo(() => ServicesCardGridStyles(), []);
 
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 

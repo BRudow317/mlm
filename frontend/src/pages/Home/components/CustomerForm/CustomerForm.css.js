@@ -7,7 +7,9 @@
  * NO hooks here — pass theme in from parent/component props.
  */
 export const CustomerFormStyles = () => {
-  // const isDark = theme === "dark";
+  // Theme toggle placeholder; adjust when theme support is added
+  const isDark = false;
+  const textMuted = "var(--mlmGray)";
 
   
 

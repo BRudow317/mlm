@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { DEFAULT_SERVICES } from '../../utils/Constants';
-import PageSection from '../../components/PageSection/PageSection';
+import PageSection from '../../layouts/PageSection';
 import styles from './Services.module.css';
 
 const ServicesPage = () => {

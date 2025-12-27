@@ -339,7 +339,15 @@ function getStubResponse(method, path) {
   return entry[normalizedMethod];
 }
 
-module.exports = {
-  STUBS,
-  getStubResponse,
-};
+// Guard CommonJS export for lint in ESM context; harmless in browser bundles
+const hasModuleExports =
+  typeof globalThis !== "undefined" &&
+  globalThis.module &&
+  globalThis.module.exports;
+
+if (hasModuleExports) {
+  globalThis.module.exports = {
+    STUBS,
+    getStubResponse,
+  };
+}

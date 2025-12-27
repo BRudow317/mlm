@@ -160,7 +160,6 @@ export function useCustomerForm({ onSubmit, serviceOptions }) {
         } else {
           // Default behavior for development: log to console
           // In production, pass an onSubmit that calls your API service.
-          // eslint-disable-next-line no-console
           console.log("CustomerForm payload:", payload);
         }
 

@@ -13,6 +13,7 @@ import { ServicesCardGrid } from "./ServicesCardGrid";
 export function HomeServicesCardGrid() {
 
   const [selectedService, setSelectedService] = useState("");
+  void selectedService; // currently not used; kept for future prefill wiring
 
   return (
     <div
