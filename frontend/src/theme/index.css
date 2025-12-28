@@ -21,19 +21,19 @@ body, html {
 }
 /* :root is a CSS keyword (a pseudo-class). It does NOT select React <div id="root">. */
 :root {
-  --mlmOrange: rgb(226, 96, 24);
-  --mlmLightOrange: rgb(243, 110, 33);
-  --mlmDark: rgb(0, 11, 0);
-  --mlmBlack: rgb(0, 0, 0);
-  --mlmGreen: rgb(105, 155, 95);
-  --mlmGray: rgb(160, 163, 161);
-  --mlmLightGreen: rgb(79, 187, 68);
-  --mlmYellow: rgb(242, 178, 54);
-  --mlmWhite: rgb(255, 255, 255);
-  --mlmNavy: #050611;
+  --My-Orange: rgb(226, 96, 24);
+  --My-LightOrange: rgb(243, 110, 33);
+  --My-Dark: rgb(0, 11, 0);
+  --My-Black: rgb(0, 0, 0);
+  --My-Green: rgb(105, 155, 95);
+  --My-Gray: rgb(160, 163, 161);
+  --My-LightGreen: rgb(79, 187, 68);
+  --My-Yellow: rgb(242, 178, 54);
+  --My-White: rgb(255, 255, 255);
+  --My-Navy: #050611;
   --Invisible: rgba(0, 0, 0, 0);
 
-  --borderGrey: 1px solid var(--mlmGray);
+  --borderGrey: 1px solid var(--My-Gray);
   --simpleTextShadow: 0 2px 6px rgba(0,0,0,0.6);
   --textStroke: 1px rgba(0, 0, 0, 0.9);
   --fontPrimary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -45,45 +45,86 @@ body, html {
      0px  3px 10px rgba(0,0,0,0.55); /* depth */
 
 
-  --itemGlowShadow: 0 0 6px var(--mlmLightGreen),
-    0 0 18px color-mix(in srgb, var(--mlmLightGreen) 70%, transparent),
-    0 0 40px color-mix(in srgb, var(--mlmLightGreen) 45%, transparent);
+  --itemGlowShadow: 0 0 6px var(--My-LightGreen),
+    0 0 18px color-mix(in srgb, var(--My-LightGreen) 70%, transparent),
+    0 0 40px color-mix(in srgb, var(--My-LightGreen) 45%, transparent);
+
+   /* ---------- Semantic surfaces (do not style components globally; only tokens) ---------- */
+  --surface-0: var(--GlobalBackground); /* page background */
+  --surface-1: var(--GlassyBackground); /* containers/sections */
+  --surface-2: var(--GlassyBackgroundDarker); /* cards/forms */
+  --surface-border: color-mix(in srgb, var(--GlobalTextColor) 18%, transparent);
+
+  /* Text */
+  --text-0: var(--GlobalTextColor);
+
+  /* Elevation */
+  --shadow-1: 0 12px 30px rgba(0, 0, 0, 0.25);
+  --shadow-2: 0 16px 40px rgba(0, 0, 0, 0.35);
+
+  /* Interactive lift */
+  --lift-y-1: -2px;
+  --lift-y-2: -3px;
+  --scale-1: 1.01;
+  --scale-2: 1.015;
+
+  /* Focus ring */
+  --focus-ring: 3px solid var(--My-LightGreen);
+  --focus-offset: 2px;
   
   
 }
 
 html[data-theme="dark"] {
-  --GlobalBackground: var(--mlmBlack);
-  --GlobalTextColor: var(--mlmWhite);
+  --GlobalBackground: var(--My-Black);
+  --GlobalTextColor: var(--My-White);
 
   --GlassyBackground: rgba(20, 24, 68, 0.25); 
   --BackBlur: blur(5px);
   --WebkitBackBlur: blur(5px);
-  --GlassyBorder: 1px solid var(--mlmGray);
+  --GlassyBorder: 1px solid var(--My-Gray);
   --GlassyBoxShadow: 25px 25px 50px -12px rgba(3, 54, 14, 0.5);
 
   --GlassyBackgroundDarker: rgba(10, 12, 36, 0.4);
   --BackBlurDarker: blur(7px);
   --WebkitBackBlurDarker: blur(7px);
-  --GlassyBorderDarker: 1px solid var(--mlmGray);
+  --GlassyBorderDarker: 1px solid var(--My-Gray);
   --GlassyBoxShadowDarker: 25px 25px 50px -12px rgba(3, 54, 14, 0.25);
+
+  /* Make surfaces consistently layered in dark mode */
+  --surface-1: rgba(20, 24, 68, 0.25);
+  --surface-2: rgba(10, 12, 36, 0.55);
+  --surface-border: rgba(160, 163, 161, 0.35);
+
+  --shadow-1: 0 12px 30px rgba(0, 0, 0, 0.45);
+  --shadow-2: 0 16px 44px rgba(0, 0, 0, 0.55);
 }
 
 html[data-theme="light"] {
-  --GlobalBackground: var(--mlmWhite);
-  --GlobalTextColor: var(--mlmBlack);
+  --GlobalBackground: var(--My-White);
+  --GlobalTextColor: var(--My-Black);
 
   --GlassyBackground: rgba(255, 255, 255, 0.25);
   --BackBlur: blur(2px);
   --WebkitBackBlur: blur(2px);
-  --GlassyBorder: 1px solid var(--mlmGray);
+  --GlassyBorder: 1px solid var(--My-Gray);
   --GlassyBoxShadow: 25px 25px 50px -12px rgba(3, 54, 14, 0.25);
 
   --GlassyBackgroundDarker: rgba(134, 134, 134, 0.4);
   --BackBlurDarker: blur(3px);
   --WebkitBackBlurDarker: blur(3px);
-  --GlassyBorderDarker: 1px solid var(--mlmDark);
+  --GlassyBorderDarker: 1px solid var(--My-Dark);
   --GlassyBoxShadowDarker: 25px 25px 50px -12px rgba(3, 54, 14, 0.25);
+
+  /* Light mode: keep cards/forms slightly more “present” than containers */
+   /* page background */
+  --surface-1: rgba(255, 255, 255, 0.65);
+  --surface-2: rgba(240, 240, 240, 0.85);
+  --surface-border: rgba(0, 11, 0, 0.15);
+
+  --shadow-1: 0 12px 30px rgba(0, 0, 0, 0.12);
+  --shadow-2: 0 16px 44px rgba(0, 0, 0, 0.18);
+
 }
 
 /* Focus */
@@ -91,11 +132,11 @@ input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
 button:focus-visible{
-  outline: 3px solid var(--mlmLightGreen, rgb(24, 85, 22));
-  outline-offset: 2px;
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
 }
 
-.GlassyEffect {
+ .GlassyEffect {
   background-color: var(--GlassyBackground);
   color: var(--GlobalTextColor);
   backdrop-filter: var(--BackBlur);
@@ -113,29 +154,31 @@ button:focus-visible{
   box-shadow: var(--GlassyBoxShadowDarker);
 }
 
-.mlmItem {
-  background-color: var(--mlmNavy);
-  color: var(--mlmWhite);
-  border: 1px solid var(--mlmGray);
+
+
+/* .My-Item {
+  background-color: var(--My-Navy);
+  color: var(--My-White);
+  border: 1px solid var(--My-Gray);
 }
 
-.mlmItem:hover{
-  background-color: var(--mlmNavy);
-  color: var(--mlmLightGreen);
-  border: 1px solid var(--mlmLightGreen);
+.My-Item:hover{
+  background-color: var(--My-Navy);
+  color: var(--My-LightGreen);
+  border: 1px solid var(--My-LightGreen);
   box-shadow: var(--itemGlowShadow);
 }
 
 .normContainer {
-  background-color: var(--mlmNavy);
-  color: var(--mlmWhite);
+  background-color: var(--My-Navy);
+  color: var(--My-White);
   padding: 2rem;
   margin: 2rem;
   border-radius: 12px;
-  border: 1px solid var(--mlmLightGreen);
+  border: 1px solid var(--My-LightGreen);
   width: 100%;
   aspect-ratio: 1/1;
-  box-shadow: var(--mlmNavy) 3px 3px 6px, #050611 -3px -3px 6px;
-}
+  box-shadow: var(--My-Navy) 3px 3px 6px, #050611 -3px -3px 6px;
+}  */
 
 /*-------------------------------------------------------------------------------------------------------*/
