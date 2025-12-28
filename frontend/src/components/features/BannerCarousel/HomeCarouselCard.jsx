@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from "react";
-import { useTheme } from "../../../../theme/ThemeContext";
+import { useTheme } from "../../../theme/ThemeContext";
 import { CarouselStyles } from "./CarouselStyles";
-import * as CMI from "../../../../assets/CarouselMedia";
+import * as CMI from "../../../assets/CarouselMedia";
 /**
  * Demo implementation showing how to use the component
  */
