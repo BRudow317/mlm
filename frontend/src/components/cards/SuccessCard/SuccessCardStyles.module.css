@@ -1,0 +1,25 @@
+.card {
+  border-radius: 16px;
+  padding: 28px;
+  text-align: center;
+  background: rgba(30, 140, 70, 0.12);
+  border: 2px solid rgba(30, 140, 70, 0.65);
+}
+
+.icon {
+  font-size: 44px;
+  font-weight: 900;
+  color: rgba(30, 140, 70, 0.95);
+  margin-bottom: 12px;
+}
+
+.title {
+  margin: 0 0 8px 0;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.message {
+  margin: 0 0 14px 0;
+  opacity: 0.9;
+}

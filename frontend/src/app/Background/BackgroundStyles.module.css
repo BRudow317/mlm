@@ -1,0 +1,8 @@
+.BackgroundWrapper {
+  /* NOTE: Path may need adjustment based on bundler */
+  background-image: url("../../assets/MlmFlag.jpg");
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}

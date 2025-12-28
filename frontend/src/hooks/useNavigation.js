@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import { NAV_ITEMS } from '../api';
+import { NAV_ITEMS } from '../main';
 
 export const useNavigation = () => {
   const location = useLocation();

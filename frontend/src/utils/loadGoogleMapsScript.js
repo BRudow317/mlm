@@ -31,6 +31,18 @@ export function loadGoogleMapsScript({ apiKey, enabled = true }) {
 
     // Explicitly disabled or key is missing/placeholder -> no-op
     if (!enabled || looksLikePlaceholderKey(apiKey)) {
+      if (!enabled) {
+        console.warn(
+          '🗺️ Google Maps: Disabled via VITE_MAPS_ENABLED=false. Map features will not be available.'
+        );
+      } else if (looksLikePlaceholderKey(apiKey)) {
+        console.warn(
+          '🗺️ Google Maps: API key is missing or appears to be a placeholder.\n' +
+          'To enable Google Maps features, add a valid API key to your .env file:\n' +
+          'VITE_GOOGLE_MAPS_API_KEY=your_actual_api_key_here\n\n' +
+          'Get your API key at: https://console.cloud.google.com/google/maps-apis/credentials'
+        );
+      }
       resolve(false);
       return;
     }

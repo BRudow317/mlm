@@ -1,13 +1,11 @@
-import React from "react";
-import { useTheme } from "../../themes/ThemeContext";
-import PageSection from "../../layouts/PageSection";
+import { useTheme } from "../../theme/ThemeContext";
 import { MlmLogo } from "../../assets";
 
 const knowledgeHighlights = [
   {
     title: "Field Notes",
     body:
-      "Capture what’s working on each jobsite, from groundwater observations to crew call-outs, so every follow-up visit starts informed.",
+      "Capture what's working on each jobsite, from groundwater observations to crew call-outs, so every follow-up visit starts informed.",
   },
   {
     title: "Safety & Standards",
@@ -39,10 +37,10 @@ const Knowledge = () => {
   const { theme } = useTheme();
 
   return (
-    <PageSection
-      heading="Knowledge Page"
-      subtitle="Centralized tips, safety notes, and campfire reminders from Miller Land Management."
-    >
+    <>
+      <h2>Knowledge Page</h2>
+      <h3>Centralized tips, safety notes, and campfire reminders from Miller Land Management.</h3>
+
       <p style={{ margin: 0, lineHeight: 1.8 }}>
         Thanks for visiting the technical brief for the Miller Land Management team.
         Use this page as quick reference for standards, reminders, and links you
@@ -97,7 +95,7 @@ const Knowledge = () => {
           }}
         />
       </div>
-    </PageSection>
+    </>
   );
 };
 

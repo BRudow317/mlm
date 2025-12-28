@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { ServicesCardGrid } from "./components/ServicesCardGrid/ServicesCardGrid";
 import { 
   //AddressAutocomplete, 
@@ -11,7 +11,7 @@ import {
   HomeCarouselCard
 } from "./components/CarouselCard/HomeCarouselCard";
 //import { CustomerFormExample } from "./components/CustomerForm/CustomerForm.example.jsx";
-import { ContactForm } from "../../features/contact-form";
+import { MasterContactForm } from "./components/MasterContactForm/MasterContactForm.jsx";
 
 
 
@@ -23,19 +23,7 @@ export default function Home() {
   <>
     <HomeCarouselCard />
     <div
-      style={{
-        backgroundColor: "transparent",
-        backdropFilter: "none",
-        WebkitBackdropFilter: "none",
-        border: "none",
-        boxShadow: "none",
-        marginTop: "24px",
-        marginInline: "0",
-        padding: "0",
-        width: "100%",
-        maxWidth: "100%",
-        borderRadius: "0",
-      }}
+      className="ServiceCardGridContainer"
     >
           <HomeServicesCardGrid
             quoteSectionId="get-quote"
@@ -66,7 +54,7 @@ export default function Home() {
               allowFullScreen
             />
           </div>
-          <ContactForm
+          <MasterContactForm 
             serviceType={selectedService}
             mergeTop
           />

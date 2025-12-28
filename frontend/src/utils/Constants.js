@@ -1,4 +1,4 @@
-import { Wrench, Hammer, Shovel, Truck, Trees, Trash2, LandPlot, Construction, Home, CarFront } from "lucide-react";
+import { Wrench, Hammer, Shovel, Truck, /*Trees,*/ Trash2, LandPlot, Construction, Home, CarFront } from "lucide-react";
 
 const DEFAULT_SERVICES = [
   { id: "emergency-repairs", title: "Emergency", Icon: Wrench },
@@ -16,11 +16,11 @@ const DEFAULT_SERVICES = [
  * Each card can scroll to the quote section and optionally pre-select a service.
  */
 const DEFAULT_EMOJI_SERVICES = [
-  { id: "emergency-repairs", title: "Emergency", icon: "???" },
-  { id: "demolition", title: "Demolition", icon: "???" },
-  { id: "septic", title: "Septic", icon: "??" },
-  { id: "land-grading", title: "Land Grading", icon: "??" },
-  { id: "debris-removal", title: "Debris", icon: "??" },
+  { id: "emergency-repairs", title: "Emergency", icon: "🛠️" },
+  { id: "demolition", title: "Demolition", icon: "🔨" },
+  { id: "septic", title: "Septic", icon: "🏠" },
+  { id: "land-grading", title: "Land Grading", icon: "🌄" },
+  { id: "debris-removal", title: "Debris", icon: "🗑️" },
   {
     id: "material-sales",
     title: "Material Sales",

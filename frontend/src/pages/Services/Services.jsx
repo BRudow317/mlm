@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 import { DEFAULT_SERVICES } from '../../utils/Constants';
-import PageSection from '../../layouts/PageSection';
 import styles from './Services.module.css';
 
 const ServicesPage = () => {
@@ -15,10 +14,10 @@ const ServicesPage = () => {
   };
 
   return (
-    <PageSection
-      heading="Our Services"
-      subtitle="Select a service and explore the work Miller Land Management delivers."
-    >
+    <>
+      <h2>Our Services</h2>
+      <h3>Select a service and explore the work Miller Land Management delivers.</h3>
+    
       <div className={styles.contentWrapper}>
         {/* Service Buttons Sidebar */}
         <div className={styles.servicesSidebar}>
@@ -68,7 +67,7 @@ const ServicesPage = () => {
           )}
         </div>
       </div>
-    </PageSection>
+    </>
   );
 };
 

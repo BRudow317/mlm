@@ -1,0 +1,24 @@
+/* Banner styles */
+.BannerWrapperStyle {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  background: linear-gradient(
+    to right,
+    rgba(11, 9, 11, 0.3) 0%,
+    rgba(11, 9, 11, 1) 15%,
+    rgba(11, 9, 11, 1) 85%,
+    rgba(11, 9, 11, 0.3) 100%
+  );
+  border-radius: 1.5rem;
+}
+
+.BannerImgStyle {
+  width: 100%;
+  object-fit: contain;
+  max-height: 10rem;
+  height: 100%;
+}

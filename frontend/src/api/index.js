@@ -1,29 +1,3 @@
-// Barrel exports for API module
-// Central export point for all API clients, utilities, endpoints, and services
-
-// Axios utilities and client
-export { apiClient } from "./axios/apiClient";
-export {
-  cacheGet,
-  cacheSet,
-  cacheDelete,
-  cacheClear,
-  buildCacheKey,
-} from "./axios/cache";
-export { http } from "./axios/http";
-
-// Endpoint definitions
-export {
-  NAV_ITEMS,
-  ROUTES,
-  CUSTOMER_API_ENDPOINTS,
-  AUTH_ENDPOINTS
-} from "./endpoints/endpoints";
-
-// Security/Auth services
-export { authAPI } from "./security/auth.api";
-
-// Business services
-// Migrated to features/contact-form - import from there instead
-// export { quoteAPI } from "./service/quote.api"; // DEPRECATED - use contactAPI from features/contact-form
-export { contactAPI } from "../features/contact-form";
+// Big Bang Migration (2025-12-27): Barrel export for shared API layer
+export { http } from './http';
+export { authAPI } from './security/auth.api';
