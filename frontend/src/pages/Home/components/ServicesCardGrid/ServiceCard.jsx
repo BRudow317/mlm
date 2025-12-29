@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
-import { ServiceCardStyles } from "./ServiceCard.css";
+import { useMemo } from "react";
+import { ServiceCardStyles } from "./ServiceCardStyles";
 
 export function ServiceCard({ service, href, isHovered, isSmallScreen, onMouseEnter, onMouseLeave, onActivate }) {
   const styles = useMemo(

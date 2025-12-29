@@ -55,9 +55,6 @@ body, html {
   --surface-2: var(--GlassyBackgroundDarker); /* cards/forms */
   --surface-border: color-mix(in srgb, var(--GlobalTextColor) 18%, transparent);
 
-  /* Text */
-  --text-0: var(--GlobalTextColor);
-
   /* Elevation */
   --shadow-1: 0 12px 30px rgba(0, 0, 0, 0.25);
   --shadow-2: 0 16px 40px rgba(0, 0, 0, 0.35);
@@ -78,6 +75,7 @@ body, html {
 html[data-theme="dark"] {
   --GlobalBackground: var(--My-Black);
   --GlobalTextColor: var(--My-White);
+  --My-Alt-Background: var(--My-Navy);
 
   --GlassyBackground: rgba(20, 24, 68, 0.25); 
   --BackBlur: blur(5px);
@@ -103,6 +101,7 @@ html[data-theme="dark"] {
 html[data-theme="light"] {
   --GlobalBackground: var(--My-White);
   --GlobalTextColor: var(--My-Black);
+  --My-Alt-Background: var(--GlobalBackground);
 
   --GlassyBackground: rgba(255, 255, 255, 0.25);
   --BackBlur: blur(2px);

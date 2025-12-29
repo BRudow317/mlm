@@ -1,7 +1,7 @@
 import { useNavigation } from "../../hooks";
 import Styles from "./FooterSectionStyles.module.css";
 import { useTheme } from "../../theme/ThemeContext";
-import LogoBanner from "../../lib/LogoBanner/LogoBanner.jsx";
+import { LogoBanner } from "../../features";
 
 // Simple inline implementation (replaces deleted getPageTitle util)
 const getPageTitle = (activeItem) => activeItem?.title || "Home";

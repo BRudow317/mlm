@@ -1,4 +1,4 @@
-import { http } from '../../../api/axios/http';
+import { http } from '../../api';
 
 /**
  * Contact Form API

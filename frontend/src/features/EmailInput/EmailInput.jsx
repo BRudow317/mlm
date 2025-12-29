@@ -1,15 +1,23 @@
-import 'EmailInputStyle.module.css';
-function EmailInput({ credentials, handleChange }) {
+import { Input as TextInput } from '../../components';
+function EmailInput({ 
+    value,
+    onChange,
+    id = "email",
+    name = "email",
+    autoComplete = "email",
+    required = false
+}) {
   return (
-        <input
+        <TextInput
             type="email"
-            id="email"
-            name="email"
-            value={credentials.email}
-            onChange={handleChange}
+            id={id}
+            name={name}
+            value={value}
+            onChange={onChange}
             className={`${EmailInputStyle.mlmInput}`}
             placeholder="you@example.com"
-            required
+            required={required}
+            autoComplete={autoComplete}
         />
     );
 }

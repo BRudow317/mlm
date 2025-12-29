@@ -8,6 +8,7 @@ export { default as Select } from './ui/form/select/Select';
 export { default as TextArea } from './ui/form/textarea/TextArea';
 export { default as Toggle } from './ui/form/toggle/Toggle';
 export { default as FormShell } from './ui/formshell/FormShell';
+export { default as FormStyles } from './ui/form/form.module.css';
 export { default as Shell } from './ui/shell/Shell';
 export { default as ErrorText } from './ui/typography/errortext/ErrorText';
 export { default as Label } from './ui/typography/label/Label';

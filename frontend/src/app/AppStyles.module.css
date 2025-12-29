@@ -2,10 +2,10 @@
 .OuterContainer {
   width: 100%;
   min-height: 100vh;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
 }
 
 .contentContainer {
@@ -20,7 +20,7 @@
   margin: 2rem;
   border-radius: 1.5rem;
 
-  /* background-color: var(--My-Navy); */
+  background-color: var(--My-Alt-Background);
 }
 
 @media (max-width: 1024px) {

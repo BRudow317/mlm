@@ -9,15 +9,14 @@
 .input:focus-visible,
 .select:focus-visible,
 .textarea:focus-visible {
-  outline: 3px solid var(--mlmLightGreen);
+  outline: 3px solid var(--My-LightGreen);
   outline-offset: 2px;
 }
 
 /* Slight hover affordance */
 .input:hover,
-.select:hover,
 .textarea:hover {
-  border-color: var(--mlmLightGreen);
+  border-color: var(--My-LightGreen);
 }
 
 /* Grid responsiveness (requires className={css.grid} on the grid wrapper) */
@@ -25,11 +24,7 @@
   Intentionally empty: the actual grid layout is defined in object styles 
 }*/
 
-@media (max-width: 720px) {
-  .grid {
-    grid-template-columns: 1fr !important;
-  }
-}
+
 
 .button {
   transition: filter 120ms ease, transform 120ms ease;
@@ -54,27 +49,16 @@
 */
 
 .mlmMasterFormShell {
-  width: 100%; /* max-width: 672px; max-w-2xl */
-  margin: 3rem auto;
-  padding: 24px; /* p-6 */
-  border-radius: 16px;
+  /* width: 100%; max-width: 672px; max-w-2xl */
+  /* margin: 3rem auto; */
+  /* padding: 24px; p-6 */
+  /* border-radius: 16px; */
 
-  background: var(--mlmNavy);
-  color: var(--GlobalTextColor);
-  border: 1px solid var(--mlmOrange);
-  box-shadow: var(--itemGlowShadow);
-  box-sizing: border-box;
-}
-
-/* When stacked directly under the Services block, blend the seam */
-.mlmMasterFormShellMergedTop {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  border-top: none !important;
-  margin-top: 0;
-  padding-top: 24px;
-  /* remove top-edge glow to avoid seam */
-  box-shadow: none;
+  /* background: var(--My-Navy); */
+  /* color: var(--GlobalTextColor); */
+  /* border: 1px solid var(--My-Orange); */
+  /* box-shadow: var(--itemGlowShadow); */
+  /* box-sizing: border-box; */
 }
 
 /* Header */
@@ -122,12 +106,11 @@
 }
 
 .mlmRequired {
-  color: var(--mlmOrange, rgb(226, 96, 24));
+  color: var(--My-Orange, rgb(226, 96, 24));
 }
 
 /* Inputs */
 .mlmInput,
-.mlmSelect,
 .mlmTextarea {
   width: 100%;
   box-sizing: border-box;
@@ -150,10 +133,7 @@
   transition: background-color 5000s ease-in-out 0s;
 }
 
-.mlmTextarea {
-  resize: vertical;
-  min-height: 110px;
-}
+
 
 .mlmInputError {
   border-color: rgba(255, 90, 90, 0.9);
@@ -168,37 +148,20 @@
 
 /* Link button */
 .mlmLinkButton {
-  border: 2px solid var(--mlmDark);
-  background: var(--mlmGray);
-  color: var(--mlmDark);
+  border: 2px solid var(--My-Dark);
+  background: var(--My-Gray);
+  color: var(--My-Dark);
   cursor: pointer;
   font-size: 12px;
   font-weight: 700;
-  text-shadow: 1px 1px 2px var(--mlmDark);
+  text-shadow: 1px 1px 2px var(--My-Dark);
   padding: 4px 6px;
   border-radius: 4px;
 }
 
-.mlmLinkButton:hover {
+.mlmLinkButton:hover,
+.mlmSuccessButton:hover {
   filter: brightness(1.05);
-}
-
-/* Select icon */
-.mlmSelectWrap {
-  position: relative;
-}
-
-.mlmSelect {
-  appearance: none;
-  padding-right: 42px;
-}
-
-.mlmSelectIcon {
-  position: absolute;
-  right: 12px;
-  top: 12px;
-  opacity: 0.75;
-  pointer-events: none;
 }
 
 /* Address input */
@@ -250,11 +213,11 @@
 }
 
 .mlmSuggestionRow:hover {
-  background: var(--mlmDark);
+  background: var(--My-Dark);
 }
 
 .mlmSuggestionRowActive {
-  background: var(--mlmLightGreen);
+  background: var(--My-LightGreen);
 }
 
 .mlmPinIcon {
@@ -347,7 +310,7 @@
 }
 
 .mlmToggleInput:checked ~ .mlmToggleTrack {
-  background: var(--mlmOrange);
+  background: var(--My-Orange);
 }
 
 .mlmToggleInput:checked ~ .mlmToggleThumb {
@@ -361,7 +324,7 @@
 }
 
 .mlmEmergencyIcon {
-  color: var(--mlmOrange);
+  color: var(--My-Orange);
 }
 
 .mlmEmergencyText {
@@ -371,13 +334,13 @@
 }
 
 .mlmEmergencyTextOn {
-  color: var(--mlmOrange);
+  color: var(--My-Orange);
   opacity: 1;
 }
 
 /* Submit button */
 .mlmSubmitButton {
-  border: 1px solid var(--mlmWhite);
+  border: 1px solid var(--My-White);
   border-radius: 12px;
   padding: 12px 16px;
   font-weight: 900;
@@ -390,16 +353,11 @@
   transform: translateY(-2px);
 }
 
-.mlmSubmitNormal {
-  background: rgba(40, 120, 220, 0.95);
-  color: #ffffff;
-  border-color: var(--mlmWhite);
-}
 
 .mlmSubmitEmergency {
-  background: var(--mlmOrange);
+  background: var(--My-Orange);
   color: #ffffff;
-  border-color: var(--mlmWhite);
+  border-color: var(--My-White);
 }
 /* Success state */
 .mlmSuccessCard {
@@ -438,28 +396,13 @@
   color: #ffffff;
 }
 
-.mlmSuccessButton:hover {
-  filter: brightness(1.04);
-}
-
-/* Focus */
-.mlmInput:focus-visible,
-.mlmSelect:focus-visible,
-.mlmTextarea:focus-visible,
-.mlmSubmitButton:focus-visible,
-.mlmLinkButton:focus-visible,
-.mlmSuccessButton:focus-visible {
-  outline: 3px solid var(--mlmLightGreen, rgb(24, 85, 22));
-  outline-offset: 2px;
+.mlmTextarea {
+  resize: vertical;
+  min-height: 110px;
 }
 
 @media (max-width: 720px) {
-  .mlmFooterRow {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .mlmSubmitButton {
-    width: 100%;
+  .grid {
+    grid-template-columns: 1fr !important;
   }
 }

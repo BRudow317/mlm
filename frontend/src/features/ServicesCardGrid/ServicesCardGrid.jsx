@@ -1,8 +1,6 @@
-import { useMemo, useState, useCallback, useEffect } from "react";
-import { useTheme } from "../../../../theme/ThemeContext";
-import { ServicesCardGridStyles } from "./ServicesCardGrid.css";
-import { ServiceCard } from "./ServiceCard";
-import { DEFAULT_SERVICES } from "../../../../utils/Constants";
+import { useState, useCallback, useEffect } from "react";
+import { ServicesCardGridStyles as styles } from "./ServicesCardGridStyles.js";
+import { DEFAULT_SERVICES } from "../../utils/Constants";
 
 
 /**
@@ -18,8 +16,6 @@ export function ServicesCardGrid({
   services = DEFAULT_SERVICES,
   heading = "Services",
 }) {
-  const { theme } = useTheme();
-  const styles = useMemo(() => ServicesCardGridStyles());
 
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
@@ -79,7 +75,6 @@ export function ServicesCardGrid({
             key={service.id}
             service={service}
             href={`#${quoteSectionId}`}
-            theme={theme}
             isHovered={hoveredId === service.id}
             isSmallScreen={isSmallScreen}
             onMouseEnter={() => setHoveredId(service.id)}

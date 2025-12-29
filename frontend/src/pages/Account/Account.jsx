@@ -1,5 +1,5 @@
 import { useState } from "react";
-import LoginForm from "./Login/LoginForm";
+import { LoginForm } from "../../features";
 
 const AccountPage = () => {
   const [credentials, setCredentials] = useState({

@@ -1,4 +1,4 @@
-import styles from 'Shell.module.css';
+import styles from './Shell.module.css';
 
 function Shell({ children }) {
     return (

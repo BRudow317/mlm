@@ -2,11 +2,11 @@
 // Created: 2025-12-27
 // Migrated from: pages/Home/components/MasterContactForm/MasterContactForm.jsx
 /* eslint-disable react-hooks/refs */ // TODO: Refactor addressAutocomplete to avoid ref access during render
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MapPin, Search, AlertTriangle, ChevronDown } from "lucide-react";
 import ContactFormStyles from "./ContactForm.module.css";
-import { DEFAULT_SERVICES } from "../../../../utils";
-import { useAddressAutocomplete } from "../../../../hooks";
+import { DEFAULT_SERVICES } from "../../utils";
+import { useAddressAutocomplete } from "../../hooks";
 
 /**
  * Main Form Component

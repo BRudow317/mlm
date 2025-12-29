@@ -1,67 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from "react";
-import { useTheme } from "../../theme/ThemeContext";
-import { CarouselStyles } from "./CarouselStyles";
-import * as CMI from "../../assets/CarouselMedia";
-/**
- * Demo implementation showing how to use the component
- */
-export const HomeCarouselCard = () => {
-  // Example media items array
-  const mediaItems = [
-    {
-      type: 'image',
-      src: CMI.AfterYard,
-      alt: 'Finished yard after repair',
-    },
-    {
-      type: 'image',
-      src: CMI.ClawDroppingDirt,
-      alt: 'Excavator placing soil backfill',
-    },
-    {
-      type: 'image',
-      src: CMI.MlmBeforeAfter,
-      alt: 'Foundation repair before and after',
-    },
-    {
-      type: 'image',
-      src: CMI.MlmMandRalphie,
-      alt: 'Crew posing with Ralphie',
-    },
-    {
-      type: 'image',
-      src: CMI.MlmYardPipe,
-      alt: 'Yard drain pipe installation',
-    },
-    {
-      type: 'image',
-      src: CMI.MlmYardPipeAfter,
-      alt: 'Restored yard after pipe install',
-    },
-    {
-      type: 'iframe',
-      src: 'https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1438938453892064%2F&show_text=false&width=320&t=0&autoplay=1&mute=1&loop=1&playsinline=1',
-      alt: 'Facebook highlight video',
-      title: 'MLM Facebook Feature',
-    },
-    {
-      type: 'iframe',
-      src: 'https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F837399041969401%2F&show_text=false&width=267&t=0&autoplay=1&mute=1&loop=1&playsinline=1',
-      alt: 'Facebook field update video',
-      title: 'MLM Facebook Update',
-    },
-  ];
-
-  return (
-      <CarouselCard 
-        items={mediaItems} 
-        cardWidth={"100%"} 
-        cardHeight={"100%"}
-        autoPlay={true}
-        autoPlayInterval={20000}
-      /> 
-  );
-};
+import { CarouselCardStyles as styles } from "./CarouselCardStyles";
 /**
  * CarouselCard Component
  * A reusable carousel component that displays images and videos in card format
@@ -75,13 +13,11 @@ export const HomeCarouselCard = () => {
  */
 export const CarouselCard = ({
   items = [],
-  cardWidth = 400,
-  cardHeight = 300,
+  // cardWidth = 400,
+  // cardHeight = 300,
   autoPlay = true,
   autoPlayInterval = 3000,
 }) => {
-  const { theme } = useTheme();
-
   const initialHighlightIndex = items.findIndex(
     (item) => item.title === "MLM Facebook Update"
   );
@@ -91,13 +27,7 @@ export const CarouselCard = ({
     initialHighlightIndex >= 0 ? initialHighlightIndex : 0
   );
 
-  /**
-   * Create styles once per render (memoized per theme).
-   * Avoids creating a new styles object for every style usage.
-   */
-  const styles = useMemo(() => CarouselStyles({ theme }), [theme]);
-
-  // State for tracking loaded media to enable lazy loading
+    // State for tracking loaded media to enable lazy loading
   const [loadedMedia, setLoadedMedia] = useState(new Set());
 
   // Ref for video elements to control playback

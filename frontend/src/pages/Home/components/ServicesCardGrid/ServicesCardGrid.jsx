@@ -1,25 +1,14 @@
-import { useMemo, useState, useCallback, useEffect } from "react";
-import { useTheme } from "../../../../theme/ThemeContext";
-import { ServicesCardGridStyles } from "./ServicesCardGrid.css";
+import { useState, useCallback, useEffect } from "react";
+import { ServicesCardGridStyles} from "./ServicesCardGridStyles.js";
 import { ServiceCard } from "./ServiceCard";
 import { DEFAULT_SERVICES } from "../../../../utils/Constants";
 
-
-/**
- * Props:
- * - quoteSectionId: DOM id of your "Get a Quote" section (default: "get-quote")
- * - onSelectService: optional callback to pre-fill the quote form with the chosen service title
- * - services: optional override for the service list
- * - heading: optional section heading
- */
 export function ServicesCardGrid({
   quoteSectionId = "get-quote",
   onSelectService,
   services = DEFAULT_SERVICES,
   heading = "Services",
 }) {
-  const { theme } = useTheme();
-  const styles = useMemo(() => ServicesCardGridStyles());
 
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
@@ -30,6 +19,9 @@ export function ServicesCardGrid({
     mql.addEventListener("change", handler);
     return () => mql.removeEventListener("change", handler);
   }, []);
+
+  // Retrieve styles for the current screen size
+  const styles = ServicesCardGridStyles(isSmallScreen);
 
   // Hover state (inline-style friendly alternative to :hover in CSS)
   const [hoveredId, setHoveredId] = useState(null);
@@ -79,7 +71,6 @@ export function ServicesCardGrid({
             key={service.id}
             service={service}
             href={`#${quoteSectionId}`}
-            theme={theme}
             isHovered={hoveredId === service.id}
             isSmallScreen={isSmallScreen}
             onMouseEnter={() => setHoveredId(service.id)}

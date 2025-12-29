@@ -1,5 +1,5 @@
 
-export const CarouselStyles = () => {
+export const CarouselCardStyles = () => {
   return {
     // Main container - fills parent with flex: 1; aspect enforced at card level
     carouselContainer: {

@@ -19,15 +19,12 @@ export function ServicesCardGridStyles() {
     heading: {
       margin: "0 0 6px 0",
       fontSize: "28px",
-      lineHeight: "34px",
-      color: "var(--mlmTextColor)",
+      lineHeight: "34px"
     },
     subheading: {
       margin: 0,
       fontSize: "14px",
-      lineHeight: "20px",
-      color: "var(--mlmTextColor)",
-      // color: isDark ? "rgba(255,255,255,0.75)" : "rgba(0,0,0,0.65)",
+      lineHeight: "20px"
     },
 
     /**

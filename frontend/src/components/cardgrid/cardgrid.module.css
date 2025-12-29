@@ -1,4 +1,5 @@
-/* Header */
+/* src/components/compounds/cardgrid/CardGrid.module.css */
+
 .header {
   margin-bottom: 32px;
 }
@@ -17,22 +18,9 @@
   opacity: 0.85;
 }
 
-/* Layout stack */
 .stack {
   display: grid;
   gap: 24px;
-}
-
-/* Footer row */
-.footerRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  padding-top: 16px;
-  border-bottom: 1px solid rgba(160, 163, 161, 0.25);
-  flex-wrap: wrap;
-  margin-bottom: 1rem;
 }
 
 .grid {
@@ -42,14 +30,7 @@
 }
 
 @media (max-width: 720px) {
-  .footerRow {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
   .grid {
     grid-template-columns: 1fr;
   }
-
 }
-

@@ -1,54 +1,30 @@
-import '../MasterFormStyles/MasterFormStyles.module.css';
-import EmailInput from '../EmailInput/EmailInput';
+import { FormShell, FormStyles, Label } from '../../components';
+import { EmailInput, PasswordInput } from '../';
 import LoginButton from './LoginButton';
-import PasswordInput from './PasswordInput';
 
-  /*
-const AccountPage = () => {
-  const [credentials, setCredentials] = useState({
-    email: "",
-    password: "",
-  });
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setCredentials((prev) => ({ ...prev, [name]: value }));
-  };
-
-  */
- 
-
-function LoginForm({ credentials, handleChange, handleSubmit }) {
-    return (
-        <form
-        className={MasterFormStyles.mlmMasterFormShell}
-        onSubmit={handleSubmit}
-        aria-label="Account login form"
-      >
-        <div className={MasterFormStyles.mlmFormStack}>
-          <div className={MasterFormStyles.mlmField}>
-            <label htmlFor="email" className={MasterFormStyles.mlmLabel}>
-              Email Address
-            </label>
-            <EmailInput credentials={credentials} handleChange={handleChange} />
+function LoginForm({ credentials, handleChange, handleSubmit, loading = false }) {
+  return (
+    <FormShell>
+      <form onSubmit={handleSubmit} aria-label="Account login form" className={FormStyles.stack}>
+        <div className={FormStyles.stack}>
+          <div className={FormStyles.stack}>
+            <Label htmlFor="email">Email or Username</Label>
+            <EmailInput value={credentials.email} onChange={handleChange} />
           </div>
-          <div className={MasterFormStyles.mlmField}>
-            <div className={MasterFormStyles.mlmFieldRow}>
-              <label htmlFor="password" className={MasterFormStyles.mlmLabel}>
-                Password
-              </label>
-              <a
-                href="#forgot-password"
-                className={MasterFormStyles.mlmForgotPassword}
-              >
-                Forgot Password?
-              </a>
+
+          <div className={FormStyles.stack}>
+            <div className={FormStyles.row}>
+              <Label htmlFor="password">Password</Label>
+              <a href="#forgot-password">Forgot Password?</a>
             </div>
-            <PasswordInput credentials={credentials} handleChange={handleChange} />
+            <PasswordInput value={credentials.password} onChange={handleChange} />
           </div>
-          <LoginButton onSubmit={handleSubmit} />
+
+          <LoginButton loading={loading} />
         </div>
       </form>
-    );
+    </FormShell>
+  );
 }
+
 export default LoginForm;

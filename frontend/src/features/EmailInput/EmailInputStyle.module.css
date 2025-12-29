@@ -1,16 +1,5 @@
-/* Focus */
-.mlmInput:focus-visible,
-.mlmSelect:focus-visible,
-.mlmTextarea:focus-visible,
-.mlmSubmitButton:focus-visible,
-.mlmLinkButton:focus-visible,
-.mlmSuccessButton:focus-visible {
-  outline: 3px solid var(--mlmLightGreen, rgb(24, 85, 22));
-  outline-offset: 2px;
-}
-
 /* Inputs */
-.mlmInput,
+/* .mlmInput,
 .mlmSelect,
 .mlmTextarea {
   width: 100%;
@@ -22,14 +11,5 @@
   color: var(--GlobalTextColor, #ffffff);
   font: inherit;
   transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
-}
+} */
 
-/* Prevent autocomplete from changing input styles */
-.mlmInput:-webkit-autofill,
-.mlmInput:-webkit-autofill:hover,
-.mlmInput:-webkit-autofill:focus,
-.mlmInput:-webkit-autofill:active {
-  -webkit-text-fill-color: var(--GlobalTextColor, #ffffff);
-  -webkit-box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.20) inset;
-  transition: background-color 5000s ease-in-out 0s;
-}
