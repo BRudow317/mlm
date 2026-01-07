@@ -6,7 +6,7 @@
  */
 
 import React, { useRef, useState, useContext, useEffect } from "react";
-import ImageCarousel from "../../../../components/ImageCarousel/ImageCarousel";
+import ServicesCarousel from "../ServicesCarousel/ServicesCarousel";
 import { SERVICE_OFFERINGS } from "../../../../constants/SERVICE_OFFERINGS";
 import { SERVICE_MEDIA_BY_ID } from "../../../../constants/SERVICE_MEDIA";
 import { BreakpointContext } from "../../../../theme/BreakpointContext";
@@ -362,7 +362,7 @@ function ServicesSection() {
               <div style={styles.contentBody}>
                 <p style={styles.placeholder}>{selectedService.description}</p>
                 <div style={styles.carouselWrap}>
-                  <ImageCarousel
+                  <ServicesCarousel
                     images={SERVICE_MEDIA_BY_ID[selectedService.id] ?? []}
                     altPrefix={selectedService.title}
                     showSetButtons={false}

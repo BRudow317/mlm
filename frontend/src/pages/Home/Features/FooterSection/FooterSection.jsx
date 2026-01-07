@@ -1,4 +1,5 @@
-import * as HomeStyles from "../../HomeStyles.module.css";
+//import * as HomeStyles from "../../HomeStyles.module.css";
+import { CONTACT_INFO } from "../../../../constants/CONTACT_INFO";
 export { FooterSection };
 
 function FooterSection() {
@@ -57,8 +58,12 @@ function FooterSection() {
         </p>
 
         <div style={styles.footerNav}>
-          <h4 style={styles.footerNavH4}>Navigation</h4>
-          <a style={styles.footerNavA}>Home</a>
+          <h4 style={styles.footerNavH4}>Miller Land Management LLC</h4>
+          <a href={`mailto:${CONTACT_INFO.EMAIL}`} style={styles.footerNavA}>Owner: {CONTACT_INFO.OWNER}</a>
+          <a href={`tel:${CONTACT_INFO.PHONE}`} style={styles.footerNavA}>Phone Number: {CONTACT_INFO.PHONE}</a>
+          <a href={`mailto:${CONTACT_INFO.EMAIL}`} style={styles.footerNavA}>Email: {CONTACT_INFO.EMAIL}</a>
+          <a href={CONTACT_INFO.FACEBOOK} style={styles.footerNavA}>Facebook: Miller Land Management</a>
+          <a href={`https://miller-land-management.com`} style={styles.footerNavA}>Domain: miller-land-management.com</a>
         </div>
       </footer>
     </>

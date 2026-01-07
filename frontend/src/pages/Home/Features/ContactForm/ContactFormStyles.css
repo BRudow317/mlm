@@ -296,8 +296,8 @@ textarea.form-input {
 }
 
 .submit-again-button {
-  background: var(--text-color);
-  color: var(--bg);
+  background: var(--bg);
+  color: var(--text-color);
 }
 
 /* ============================================================================

@@ -103,12 +103,13 @@
   text-decoration: none;
   font-weight: 400;
   text-shadow: none;
-  border: 1px solid var(--text-color);
+  border-width: 1px;
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--text-color) 25%, transparent 75%);
   box-shadow: none;
   margin: 0;
   background: var(--tint-75);
-  border-radius: 10px;
-  text-overflow: none;
+  border-radius: 12px;
   white-space: nowrap;
   /* gap: 0.35rem; */
   padding: 8px 12px;
@@ -119,7 +120,7 @@
   text-decoration: underline;
   color: var(--My-LightGreen, rgb(79, 187, 68));
   border-color: var(--My-LightGreen, rgb(79, 187, 68));
-  font-weight: 700;
+  /* font-weight: 700; */
   border: 1px solid var(--My-LightGreen, rgb(79, 187, 68));
   box-shadow: none;
   /* outline-offset: 2px; */
@@ -131,9 +132,12 @@
 
 /* Shrink logo progressively on smaller screens */
 @media (max-width: 900px) {
+  .navShell {
+    gap: 1rem;
+  }
   .navLogo {
     min-height: 35px;
-    max-height: 65px;
+    max-height: 65px;  
   }
   .adList {
     gap: 0.25rem;
@@ -144,13 +148,16 @@
   } */
 }
 
-@media (max-width: 700px) {
+@media (max-width: 720px) {
   .navLogo {
-    min-height: 32px;
-    max-height: 55px;
+    min-height: 35px;
+    max-height: 65px;
   }
   .adList {
+    display: flex;
+    flex-direction: column;
     gap: 0.15rem;
+    margin: 8px;
   }
   /* .adLink {
     padding: 0.45rem 0.6rem;
@@ -169,15 +176,25 @@
 }
 
 @media (max-width: 480px) {
-  .navShell{
+  .navShell {
     gap: 0px;
+    background-color: var(--tint-50);
+  }
+  .adWrapper{
+    justify-content: flex-end;
+    gap: 0px;
+    /* background-color: var(--tint-50); */
   }
   .navLogo {
     min-height: 28px;
-    max-height: 48px;
+    /* max-height: 48px; */
+    max-height: 72px;
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
   }
   .adList {
-    gap: 0px;
+    gap: 2px;
     padding-right: 0.5rem;
   }
   /* .adLink {
@@ -187,15 +204,8 @@
 }
 
 /* Hide logo on ultra-small screens for more nav button space */
-@media (max-width: 350px) {
+@media (max-width: 360px) {
   .navLogo {
     display: none;
-  }
-  .navLogo {
-    min-height: 24px;
-    max-height: 40px;
-  }
-  .navLogoImg {
-    min-height: 1.75rem;
   }
 }

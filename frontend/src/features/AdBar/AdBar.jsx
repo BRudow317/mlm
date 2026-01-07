@@ -29,14 +29,18 @@ function AdBar() {
               <a
                 href={`mailto:${CONTACT_INFO.EMAIL}`}
                 className={styles.adLink}
-              >{CONTACT_INFO.EMAIL}</a>
+              >
+                ✉️ {CONTACT_INFO.EMAIL}
+              </a>
             </li>
             <li key={CONTACT_INFO.PHONE}
               // className={styles.listItem}
             >
               <a href={`tel:${CONTACT_INFO.PHONE}`}
                 className={styles.adLink}
-              >{CONTACT_INFO.PHONE}</a>
+              >
+                📞 {CONTACT_INFO.PHONE}
+              </a>
             </li>
           </ul>
         </div>
