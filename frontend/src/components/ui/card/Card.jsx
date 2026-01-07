@@ -27,6 +27,7 @@ const Card = React.forwardRef(function Card(
   },
   ref
 ) {
+  const CompTag = Comp;
   const resolvedRole = role ?? (interactive ? 'button' : undefined);
   const resolvedTabIndex = tabIndex ?? (interactive ? 0 : undefined);
 
@@ -41,7 +42,7 @@ const Card = React.forwardRef(function Card(
   );
 
   return (
-    <Comp
+    <CompTag
       ref={ref}
       className={classes}
       role={resolvedRole}
@@ -49,7 +50,7 @@ const Card = React.forwardRef(function Card(
       {...rest}
     >
       {children}
-    </Comp>
+    </CompTag>
   );
 });
 

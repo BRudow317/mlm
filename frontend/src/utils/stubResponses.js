@@ -1,3 +1,4 @@
+/* global module */
 /**
  * Stub Response Utility (src/utils/stubResponses.js)
  *

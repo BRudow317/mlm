@@ -1,71 +1,92 @@
 /**
- * Loads the Google Maps JS script once per page (idempotent).
- * Returns:
- *  - true  => maps loaded and available
- *  - false => maps intentionally not loaded (dev mode / missing key / placeholder key)
+ * loadGoogleMapsScript.js
+ * 
+ * Singleton loader for Google Maps JavaScript API.
+ * Handles the complexity of async script loading with callback-based initialization.
+ * 
+ * WHY THIS EXISTS:
+ * - Google Maps must only be loaded once per page
+ * - Multiple React components may try to load it simultaneously
+ * - The `loading=async` pattern requires a callback, not just script.onload
+ * - We need `importLibrary` to be available, not just `window.google.maps`
  */
-export function loadGoogleMapsScript({ apiKey, enabled = true }) {
-  const SCRIPT_ID = "google-maps-js";
 
-  // Treat these as "not a real key" for dev/prototyping.
-  // Adjust to match your placeholders.
-  const looksLikePlaceholderKey = (key) => {
-    if (!key) return true;
-    const k = String(key).trim();
-    if (k.length < 20) return true; // real Google API keys are typically longer than this
-    const lower = k.toLowerCase();
-    return (
-      lower.includes("devkey") ||
-      lower.includes("your_") ||
-      lower.includes("placeholder") ||
-      lower.includes("example")
-    );
-  };
+const SCRIPT_ID = "google-maps-js";
 
-  return new Promise((resolve, reject) => {
-    // Already loaded
-    if (window.google?.maps) {
+/** Generate a unique callback name to avoid collisions during hot reload */
+function uniqueCallbackName() {
+  const bytes = new Uint8Array(8);
+  crypto.getRandomValues(bytes);
+  return `__gmaps_cb_${[...bytes].map(b => b.toString(16).padStart(2, "0")).join("")}`;
+}
+
+/** Check if Google Maps API is fully initialized (importLibrary is our signal) */
+function isReady() {
+  return typeof window.google?.maps?.importLibrary === "function";
+}
+
+/** Poll until isReady() returns true, with timeout */
+function waitForReady(resolve, reject, timeout = 15000) {
+  const start = Date.now();
+  const check = setInterval(() => {
+    if (isReady()) {
+      clearInterval(check);
       resolve(true);
-      return;
+    } else if (Date.now() - start > timeout) {
+      clearInterval(check);
+      reject(new Error("Google Maps initialization timed out"));
+    }
+  }, 50);
+}
+
+/**
+ * Load the Google Maps JavaScript API
+ * @param {Object} options
+ * @param {string} options.apiKey - Your Google Maps API key
+ * @param {string[]} options.libraries - Libraries to preload (e.g., ['places', 'marker'])
+ * @returns {Promise<boolean>} - true if loaded, false if no API key provided
+ */
+export function loadGoogleMapsScript({
+  apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || null,
+  libraries = ["places", "marker"],
+} = {}) {
+  return new Promise((resolve, reject) => {
+    // Already loaded - nothing to do
+    if (isReady()) return resolve(true);
+    
+    // No API key - can't load
+    if (!apiKey) return resolve(false);
+
+    // Script tag exists (another component started loading) - wait for it
+    if (document.getElementById(SCRIPT_ID)) {
+      return waitForReady(resolve, reject);
     }
 
-    // Explicitly disabled or key is missing/placeholder -> no-op
-    if (!enabled || looksLikePlaceholderKey(apiKey)) {
-      if (!enabled) {
-        console.warn(
-          '🗺️ Google Maps: Disabled via VITE_MAPS_ENABLED=false. Map features will not be available.'
-        );
-      } else if (looksLikePlaceholderKey(apiKey)) {
-        console.warn(
-          '🗺️ Google Maps: API key is missing or appears to be a placeholder.\n' +
-          'To enable Google Maps features, add a valid API key to your .env file:\n' +
-          'VITE_GOOGLE_MAPS_API_KEY=your_actual_api_key_here\n\n' +
-          'Get your API key at: https://console.cloud.google.com/google/maps-apis/credentials'
-        );
-      }
-      resolve(false);
-      return;
-    }
+    // We're the first - create and load the script
+    const cbName = uniqueCallbackName();
+    
+    window[cbName] = () => {
+      delete window[cbName];
+      // Callback fires on script load, but importLibrary may need a tick
+      waitForReady(resolve, reject, 5000);
+    };
 
-    // Script tag already created
-    const existing = document.getElementById(SCRIPT_ID);
-    if (existing) {
-      existing.addEventListener("load", () => resolve(true));
-      existing.addEventListener("error", (e) => reject(e));
-      return;
-    }
+    const params = new URLSearchParams({
+      key: apiKey,
+      loading: "async",
+      callback: cbName,
+      v: "weekly",
+      libraries: libraries.join(","),
+    });
 
-    // Create script tag
     const script = document.createElement("script");
     script.id = SCRIPT_ID;
     script.async = true;
-    script.defer = true;
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(
-      apiKey
-    )}&libraries=places`;
-
-    script.onload = () => resolve(true);
-    script.onerror = (e) => reject(e);
+    script.src = `https://maps.googleapis.com/maps/api/js?${params}`;
+    script.onerror = (e) => {
+      delete window[cbName];
+      reject(new Error("Failed to load Google Maps script"));
+    };
 
     document.head.appendChild(script);
   });

@@ -1,15 +1,38 @@
-import { useState } from "react";
-import { ServicesCardGrid } from "./components/ServicesCardGrid/ServicesCardGrid.jsx";
-import { HomeCarouselCard } from "./components/CarouselCard/HomeCarouselCard";
-import { MasterContactForm } from "./components/MasterContactForm/MasterContactForm.jsx";
+/**
+ * Home Page Component
+ * 
+ * 
+ */
 
-export default function Home() {
-  const [selectedService, setSelectedService] = useState("");
+
+// import { useState, useRef } from "react";
+// import { SERVICE_OFFERINGS, DEFAULT_SERVICES } from "./Constants";
+import {FooterSection} from './Features/FooterSection/FooterSection';
+import {HeroSection} from './Features/HeroSection/HeroSection';
+import { ServicesSection } from "./Features/ServicesSection/ServicesSection";
+import { ContactForm } from "./Features/ContactForm/ContactForm";
+// import { ContactFormFix1 } from "./components/ContactForm/ContactFormFix1";
+// import { ContactFormFix2 } from "./components/ContactForm/ContactFormFix2";
+// import { ContactFormFix3 } from "./components/ContactForm/ContactFormFix3";
+
+// import * as HomeStyles from "./HomeStyles.module.css";
+
+
+export { Home };
+
+function Home() {
+
   return (
     <>
-      <HomeCarouselCard />
-      <ServicesCardGrid />
-      <MasterContactForm serviceType={selectedService} mergeTop />
+      <HeroSection />
+
+      <ServicesSection />
+
+      <ContactForm />
+
+      {/* <ContactFormFix1 /> */}
+
+      <FooterSection />
     </>
   );
 }

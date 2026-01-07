@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { CarouselCardStyles as styles } from "./CarouselCardStyles";
 /**
  * CarouselCard Component
@@ -27,8 +27,24 @@ export const CarouselCard = ({
     initialHighlightIndex >= 0 ? initialHighlightIndex : 0
   );
 
-    // State for tracking loaded media to enable lazy loading
-  const [loadedMedia, setLoadedMedia] = useState(new Set());
+  const getIndicesToLoad = useCallback(
+    (index) => {
+      if (items.length === 0) return [];
+      return [
+        index,
+        (index - 1 + items.length) % items.length,
+        (index + 1) % items.length,
+      ];
+    },
+    [items.length]
+  );
+
+  // State for tracking loaded media to enable lazy loading
+  const [loadedMedia, setLoadedMedia] = useState(() => {
+    const initial = new Set();
+    getIndicesToLoad(currentIndex).forEach((idx) => initial.add(idx));
+    return initial;
+  });
 
   // Ref for video elements to control playback
   const videoRefs = useRef({});
@@ -73,23 +89,32 @@ export const CarouselCard = ({
   /**
    * Navigation handler - moves to next slide
    */
-  const goToNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % items.length);
-  };
+  const goToNext = useCallback(() => {
+    setCurrentIndex((prev) => {
+      const next = (prev + 1) % items.length;
+      setLoadedMedia((prevSet) => {
+        const nextSet = new Set(prevSet);
+        getIndicesToLoad(next).forEach((idx) => nextSet.add(idx));
+        return nextSet;
+      });
+      return next;
+    });
+  }, [getIndicesToLoad, items.length]);
 
   /**
    * Navigation handler - moves to previous slide
    */
-  const goToPrevious = () => {
-    setCurrentIndex((prev) => (prev - 1 + items.length) % items.length);
-  };
-
-  /**
-   * Navigation handler - jumps to specific slide
-   */
-  const goToSlide = (index) => {
-    setCurrentIndex(index);
-  };
+  const goToPrevious = useCallback(() => {
+    setCurrentIndex((prev) => {
+      const next = (prev - 1 + items.length) % items.length;
+      setLoadedMedia((prevSet) => {
+        const nextSet = new Set(prevSet);
+        getIndicesToLoad(next).forEach((idx) => nextSet.add(idx));
+        return nextSet;
+      });
+      return next;
+    });
+  }, [getIndicesToLoad, items.length]);
 
   /**
    * Auto-play effect
@@ -100,26 +125,7 @@ export const CarouselCard = ({
 
     const interval = setInterval(goToNext, autoPlayInterval);
     return () => clearInterval(interval);
-  }, [autoPlay, autoPlayInterval, items.length]); // intentional: no currentIndex
-
-  /**
-   * Lazy loading effect - loads current, previous, and next slides
-   */
-  useEffect(() => {
-    if (items.length === 0) return;
-
-    const indicesToLoad = [
-      currentIndex,
-      (currentIndex - 1 + items.length) % items.length,
-      (currentIndex + 1) % items.length,
-    ];
-
-    setLoadedMedia((prev) => {
-      const newSet = new Set(prev);
-      indicesToLoad.forEach((idx) => newSet.add(idx));
-      return newSet;
-    });
-  }, [currentIndex, items.length]);
+  }, [autoPlay, autoPlayInterval, goToNext, items.length]);
 
   /**
    * Video playback control - pauses non-visible videos

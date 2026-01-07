@@ -28,6 +28,7 @@ function Carousel({
   as: Comp = 'section',
   ...rest
 }) {
+  const CompTag = Comp;
   const trackRef = React.useRef(null);
 
   const trackStyle = {
@@ -65,7 +66,7 @@ function Carousel({
   const hasHeader = Boolean(title || subtitle);
 
   return (
-    <Comp className={cx(styles.stack, className)} {...rest}>
+    <CompTag className={cx(styles.stack, className)} {...rest}>
       {hasHeader && (
         <header className={styles.header}>
           <div className={styles.headerText}>
@@ -132,7 +133,7 @@ function Carousel({
           </div>
         ))}
       </div>
-    </Comp>
+    </CompTag>
   );
 }
 

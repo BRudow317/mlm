@@ -1,0 +1,447 @@
+// ContactForm.jsx - Production Implementation
+import { useEffect, useState, useContext, useCallback } from "react";
+import { GoogleAddrAndMap } from "../../../../features/GoogleAddrAndMap/GoogleAddrAndMap";
+import { BreakpointContext } from "../../../../theme/BreakpointContext";
+import "./ContactFormStyles.css";
+export { ContactForm };
+// ============================================================================
+// CONFIGURATION
+// ============================================================================
+const DEBOUNCE_TIME = 1200; // Tunable - will be refined in UX testing
+
+// Field validation configuration - Single source of truth
+const FORM_CONFIG = {
+  name: {
+    label: "Full Name",
+    type: "text",
+    placeholder: "Name",
+    autoComplete: "name",
+    required: true,
+    validate: (value) => {
+      if (!value.trim()) return 'Name is required';
+      return null;
+    },
+  },
+  email: {
+    label: "Email Address",
+    type: "email",
+    placeholder: "Email Address",
+    autoComplete: "email",
+    validate: (value, formData) => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (value.trim() && !emailRegex.test(value)) {
+        return 'Invalid email format';
+      }
+      if (!value.trim() && !formData.phone?.trim()) {
+        return 'Email or phone required';
+      }
+      return null;
+    },
+    crossValidate: ['phone'],
+  },
+  phone: {
+    label: "Phone Number",
+    type: "tel",
+    placeholder: "Phone Number",
+    autoComplete: "tel",
+    inputMode: "tel",
+    validate: (value, formData) => {
+      const phoneRegex = /^[0-9()\-/\s]*$/;
+      if (value.trim() && !phoneRegex.test(value)) {
+        return 'Invalid phone format';
+      }
+      if (!value.trim() && !formData.email?.trim()) {
+        return 'Email or phone required';
+      }
+      return null;
+    },
+    crossValidate: ['email'],
+  },
+  customMessage: {
+    label: "Service Type",
+    type: "textarea",
+    placeholder: "How can we help?...",
+    rows: 4,
+    required: false,
+  },
+  
+};
+
+// ============================================================================
+// DEBOUNCE HOOK
+// ============================================================================
+function useDebounce(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => clearTimeout(handler);
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+
+// ============================================================================
+// FORM VALIDATION HOOK
+// ============================================================================
+function useFormValidation(config) {
+  // Form data
+  const [formData, setFormData] = useState(() => {
+    const initial = {};
+    Object.keys(config).forEach(key => {
+      initial[key] = "";
+    });
+    return initial;
+  });
+
+  // Field states: 'default' | 'active' | 'validated' | 'warning' | 'error' | 'locked'
+  const [fieldStates, setFieldStates] = useState({});
+
+  // Validation errors
+  const [errors, setErrors] = useState({});
+
+  // Track which fields are actively being edited (for debouncing)
+  const [activeFields, setActiveFields] = useState({});
+
+  // Form submission state
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  // Create debounced triggers for each field
+  const debouncedTriggers = {};
+  Object.keys(config).forEach(fieldName => {
+    debouncedTriggers[fieldName] = useDebounce(
+      activeFields[fieldName] ? Date.now() : null,
+      DEBOUNCE_TIME
+    );
+  });
+
+  // Validate a single field
+  const validateField = useCallback((fieldName, value = null) => {
+    const fieldConfig = config[fieldName];
+    if (!fieldConfig?.validate) return null;
+    
+    const valueToValidate = value !== null ? value : formData[fieldName];
+    return fieldConfig.validate(valueToValidate, formData);
+  }, [config, formData]);
+
+  // Run validation and update state
+  const runValidation = useCallback((fieldName) => {
+    if (isSubmitted) return; // Don't validate if form is locked
+
+    const error = validateField(fieldName);
+    
+    setFieldStates(prev => ({
+      ...prev,
+      [fieldName]: error ? 'warning' : 'validated'
+    }));
+
+    setErrors(prev => ({
+      ...prev,
+      [fieldName]: error
+    }));
+
+    return error;
+  }, [validateField, isSubmitted]);
+
+  // Handle debounced validation for each field
+  Object.keys(config).forEach(fieldName => {
+    const debouncedTrigger = debouncedTriggers[fieldName];
+    
+    
+    useEffect(() => {
+      if (debouncedTrigger === null) return;
+
+      // Validation runs ONLY ONCE after timer completes
+      runValidation(fieldName);
+
+      // Cross-validate dependent fields if they're not active
+      const fieldConfig = config[fieldName];
+      if (fieldConfig.crossValidate) {
+        fieldConfig.crossValidate.forEach(dependentField => {
+          if (!activeFields[dependentField] && fieldStates[dependentField]) {
+            runValidation(dependentField);
+          }
+        });
+      }
+
+      // Mark field as no longer active
+      setActiveFields(prev => ({ ...prev, [fieldName]: false }));
+    }, [debouncedTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
+  });
+
+  // Handle input change
+  const handleChange = (e) => {
+    if (isSubmitted) return; // Don't allow changes if locked
+
+    const { name, value, type, checked } = e.target;
+    const newValue = type === "checkbox" ? checked : value;
+
+    setFormData(prev => ({ ...prev, [name]: newValue }));
+
+    // Mark field as active (white border, timer starts)
+    setActiveFields(prev => ({ ...prev, [name]: true }));
+    setFieldStates(prev => ({ ...prev, [name]: 'active' }));
+
+    // Clear error
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: null }));
+    }
+  };
+
+  // Handle user actions that reset timer (focus, paste, cut, etc.)
+  const handleFieldAction = (fieldName) => {
+    if (isSubmitted) return;
+
+    setActiveFields(prev => ({ ...prev, [fieldName]: true }));
+    setFieldStates(prev => ({ ...prev, [fieldName]: 'active' }));
+  };
+
+  // Handle blur - instant validation (no debounce)
+  const handleBlur = (fieldName) => {
+    if (isSubmitted) return;
+
+    setActiveFields(prev => ({ ...prev, [fieldName]: false }));
+    
+    // Instant validation on blur
+    const error = validateField(fieldName);
+    setFieldStates(prev => ({
+      ...prev,
+      [fieldName]: error ? 'warning' : 'validated'
+    }));
+    setErrors(prev => ({
+      ...prev,
+      [fieldName]: error
+    }));
+  };
+
+  // Validate entire form (for submission)
+  const validateForm = () => {
+    const newErrors = {};
+    const newStates = {};
+    
+    Object.keys(config).forEach(fieldName => {
+      const error = validateField(fieldName);
+      if (error) {
+        newErrors[fieldName] = error;
+        // Orange fields become red on submit attempt
+        newStates[fieldName] = fieldStates[fieldName] === 'warning' ? 'error' : 'warning';
+      } else {
+        newStates[fieldName] = 'validated';
+      }
+    });
+
+    setErrors(newErrors);
+    setFieldStates(prev => ({ ...prev, ...newStates }));
+
+    return Object.keys(newErrors).length === 0;
+  };
+
+  // Submit form
+  const submitForm = async () => {
+    const isValid = validateForm();
+    
+    // TODO: Set Error states on invalid fields
+    // TODO: Update UI to show text based reason for errors
+    if (!isValid) {
+      return false;
+    }
+
+    // Lock all fields (green, disabled)
+    const lockedStates = {};
+    Object.keys(config).forEach(fieldName => {
+      lockedStates[fieldName] = 'locked';
+    });
+    setFieldStates(lockedStates);
+    setIsSubmitted(true);
+    setShowSuccess(true);
+
+    // TODO: API call to save to session storage
+    // await saveToSessionStorage(formData);
+
+    return true;
+  };
+
+  // Submit again - unlock fields
+  const submitAgain = () => {
+    setIsSubmitted(false);
+    setShowSuccess(false);
+    
+    // Reset all locked fields to their validated state
+    const unlockedStates = {};
+    Object.keys(config).forEach(fieldName => {
+      unlockedStates[fieldName] = errors[fieldName] ? 'warning' : 'validated';
+    });
+    setFieldStates(unlockedStates);
+  };
+
+  return {
+    formData,
+    fieldStates,
+    errors,
+    isSubmitted,
+    showSuccess,
+    handleChange,
+    handleFieldAction,
+    handleBlur,
+    submitForm,
+    submitAgain,
+  };
+}
+
+// ============================================================================
+// COMPONENT
+// ============================================================================
+function ContactForm({ serviceType }) {
+
+
+  const screenSize = useContext(BreakpointContext);
+  const [GoogleAddressInput, GoogleMapBox, { location }] = GoogleAddrAndMap();
+
+  const {
+    formData,
+    fieldStates,
+    errors,
+    isSubmitted,
+    showSuccess,
+    handleChange,
+    handleFieldAction,
+    handleBlur,
+    submitForm,
+    submitAgain,
+  } = useFormValidation(FORM_CONFIG);
+
+  // Handle form submission
+  const handleSubmit = async () => {
+    await submitForm();
+  };
+
+  // Render field helper
+  const renderField = (fieldName, fieldConfig) => {
+    const isTextarea = fieldConfig.type === 'textarea';
+    const InputComponent = isTextarea ? 'textarea' : 'input';
+    const state = fieldStates[fieldName] || 'default';
+
+    const commonProps = {
+      id: fieldName,
+      name: fieldName,
+      value: formData[fieldName] || "",
+      onChange: handleChange,
+      onFocus: () => handleFieldAction(fieldName),
+      onBlur: () => handleBlur(fieldName),
+      onPaste: () => handleFieldAction(fieldName),
+      onCut: () => handleFieldAction(fieldName),
+      placeholder: fieldConfig.placeholder,
+      disabled: state === 'locked',
+      'data-validation-state': state,
+      className: "form-input",
+    };
+
+    if (isTextarea) {
+      return <textarea {...commonProps} rows={fieldConfig.rows || 4} />;
+    }
+
+
+
+    return (
+      <input
+        {...commonProps}
+        type={fieldConfig.type}
+        autoComplete={fieldConfig.autoComplete}
+        inputMode={fieldConfig.inputMode}
+      />
+    );
+  };
+
+  return (
+    <div className="section-wrapper">
+    <section id="contact-form" aria-label="Contact Form" 
+    className={screenSize==='xsm'? "contact-form-section contact-form-section-xsm" : "contact-form-section"}>
+      <header className="form-header">
+        <h3 className="form-title">Request a Free Service Quote</h3>
+      </header>
+
+      <form className={screenSize==='xsm'? "form-stack form-stack-xsm" : "form-stack"}>
+        {/* First row: Name, Email, Phone */}
+        <div className={`form-grid ${screenSize === 'xsm' ? 'form-grid-mobile' : ''}`}>
+          {['name', 'email', 'phone'].map(fieldName => {
+            const fieldConfig = FORM_CONFIG[fieldName];
+            return (
+              <div key={fieldName} className="field">
+                <label htmlFor={fieldName} className="label">
+                  {fieldConfig.label}
+                  {errors[fieldName] && (
+                    <span className="error">{errors[fieldName]}</span>
+                  )}
+                </label>
+                {renderField(fieldName, fieldConfig)}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Address - Full Width */}
+        <div className="field field-full-width">
+          <label htmlFor="address" className="label">
+            Service Address
+          </label>
+          <div className="address-wrap">
+            <GoogleAddressInput
+              className="form-input form-input-with-icon"
+              data-validation-state={location?.lat && location?.lng ? 'validated' : 'default'}
+              disabled={isSubmitted}
+            />
+          </div>
+        </div>
+
+        {/* Service Type - Full Width */}
+        <div className="field field-full-width">
+          <label htmlFor="customMessage" className="label">
+            {FORM_CONFIG.customMessage.label}
+          </label>
+          {renderField('customMessage', FORM_CONFIG.customMessage)}
+        </div>
+
+        {/* TODO: Add more field rows here as needed */}
+
+        {/* Submit / Submit Again */}
+        <div className="footer-row">
+          {showSuccess && (
+            <div className="success-message">
+              <span className="success-icon">✓</span>
+              <span>Thanks for reaching out! We'll contact you ASAP.</span>
+            </div>
+          )}
+          
+          {!isSubmitted ? (
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className="submit-button"
+            >
+              Submit Request
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={submitAgain}
+              className="submit-button submit-again-button"
+            >
+              Submit Again
+            </button>
+          )}
+        </div>
+      </form>
+
+      {/* Google Maps */}
+      <div className="map-shell">
+        <GoogleMapBox className="map" />
+        <div className="map-overlay" />
+      </div>
+    </section>
+    </div>
+  );
+}

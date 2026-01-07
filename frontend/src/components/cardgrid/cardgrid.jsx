@@ -24,6 +24,7 @@ function CardGrid({
   as: Comp = 'section',
   ...rest
 }) {
+  const CompTag = Comp;
   const gridStyle = {
     gap: typeof gap === 'number' ? `${gap}px` : gap,
     alignItems: align,
@@ -33,7 +34,7 @@ function CardGrid({
   };
 
   return (
-    <Comp className={cx(styles.stack, className)} {...rest}>
+    <CompTag className={cx(styles.stack, className)} {...rest}>
       {(title || subtitle) && (
         <header className={styles.header}>
           {title && <h2 className={styles.title}>{title}</h2>}
@@ -44,7 +45,7 @@ function CardGrid({
       <div className={cx(styles.grid, gridClassName)} style={gridStyle}>
         {children}
       </div>
-    </Comp>
+    </CompTag>
   );
 }
 

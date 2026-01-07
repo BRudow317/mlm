@@ -1,3 +1,6 @@
+const fbBaseSrc = "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F837399041969401%2F&show_text=false&width=267&t=0";
+const fbAutoplaySrc = `${fbBaseSrc}&autoplay=1&muted=1&loop=1&playsinline=1`;
+
 function MlmVideo2(){
     return (
         <div
@@ -8,16 +11,18 @@ function MlmVideo2(){
             }}
           >
             <iframe
-              title="Facebook field update"
-              src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F837399041969401%2F&show_text=false&width=267&t=0"
+              title="Miller Land Management Facebook Video #2"
+              src={shouldPlayFbVideo ? fbAutoplaySrc : fbBaseSrc}
               width="100%"
-              height="476"
+              // height="476"
+              height="100%"
               style={{
                 border: "none",
                 overflow: "hidden",
                 borderRadius: "1rem",
                 boxShadow: "0 10px 30px rgba(0, 0, 0, 0.45)",
-                maxWidth: "420px",
+                contentVisibility: "auto",
+                // maxWidth: "420px",
               }}
               scrolling="no"
               frameBorder="0"

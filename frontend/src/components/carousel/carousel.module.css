@@ -52,9 +52,10 @@
 
   cursor: pointer;
   transition: transform 120ms ease, filter 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+  z-index: 9;
 }
 
-.arrow:hover {
+ .arrow:hover {
   transform: translateY(var(--lift-y-1));
   filter: brightness(1.03);
   box-shadow: var(--shadow-2);
@@ -68,7 +69,7 @@
 .arrow:focus-visible {
   outline: var(--focus-ring);
   outline-offset: var(--focus-offset);
-}
+} /**/
 
 /* Track */
 .carousel {
