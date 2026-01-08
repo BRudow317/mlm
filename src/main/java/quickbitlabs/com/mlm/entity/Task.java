@@ -12,7 +12,7 @@ public class Task extends BaseEntity {
     private String assignedTo;
 
     // Foreign references (IDs)
-    private java.util.UUID caseId;
+    // private java.util.UUID caseId;
     private java.util.UUID emailId;
 
     public String getTitle() { return title; }

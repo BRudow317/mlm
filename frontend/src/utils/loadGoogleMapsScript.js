@@ -83,7 +83,7 @@ export function loadGoogleMapsScript({
     script.id = SCRIPT_ID;
     script.async = true;
     script.src = `https://maps.googleapis.com/maps/api/js?${params}`;
-    script.onerror = (e) => {
+    script.onerror = () => {
       delete window[cbName];
       reject(new Error("Failed to load Google Maps script"));
     };

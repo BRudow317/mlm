@@ -11,6 +11,8 @@ public class Address extends BaseEntity {
     private String state;
     private String postalCode;
     private String country;
+    private String longitude;
+    private String latitude;
 
     // Reference to Contact by UUID
     private java.util.UUID contactId;
@@ -35,4 +37,10 @@ public class Address extends BaseEntity {
 
     public java.util.UUID getContactId() { return contactId; }
     public void setContactId(java.util.UUID contactId) { this.contactId = contactId; }
+
+    public String getLongitude() { return longitude; }
+    public void setLongitude(String longitude) { this.longitude = longitude; }
+
+    public String getLatitude() { return latitude; }
+    public void setLatitude(String latitude) { this.latitude = latitude; }
 }

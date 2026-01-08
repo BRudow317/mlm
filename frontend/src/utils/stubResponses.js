@@ -27,15 +27,6 @@
  * - headers: optional headers to attach
  */
 const STUBS = {
-  /**
-   * Service: CustomerService
-   * Endpoint: /api/customer
-   * Methods:
-   * - GET: Returns a mock customer profile with basic fields
-   * - POST: Creates a mock customer and returns its canonical representation
-   * - PUT: Updates customer fields and returns updated fields
-   * - DELETE: Simulates deletion, returns no body (204)
-   */
   "/api/customer": {
     GET: {
       status: 200,

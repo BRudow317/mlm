@@ -70,10 +70,6 @@ function ServicesCarousel({
   const activeImage = activeImages[activeImageIndex] ?? null;
 
   useEffect(() => {
-    setActiveImageIndex(0);
-  }, [activeSetIndex]);
-
-  useEffect(() => {
     if (!autoPlay || activeImages.length <= 1) return undefined;
 
     const timerId = setInterval(() => {
@@ -85,6 +81,7 @@ function ServicesCarousel({
 
   const handleSetChange = (index) => {
     setActiveSetIndex(index);
+    setActiveImageIndex(0);
     if (onSetChange) {
       onSetChange(normalizedSets[index], index);
     }

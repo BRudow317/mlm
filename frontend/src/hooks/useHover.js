@@ -15,14 +15,14 @@ export function useHover() {
   const [node, setNode] = useState(null);
 
   const ref = useCallback((element) => {
+    if (!element) {
+      setIsHovered(false);
+    }
     setNode(element);
   }, []);
 
   useEffect(() => {
-    if (!node) {
-      setIsHovered(false);
-      return undefined;
-    }
+    if (!node) return undefined;
 
     const onEnter = () => setIsHovered(true);
     const onLeave = () => setIsHovered(false);
@@ -34,7 +34,6 @@ export function useHover() {
     return () => {
       node.removeEventListener("pointerenter", onEnter);
       node.removeEventListener("pointerleave", onLeave);
-      setIsHovered(false);
     };
   }, [node]);
 

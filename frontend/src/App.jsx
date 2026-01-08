@@ -3,8 +3,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Layout } from './layouts/Layout';
 import { Home} from './pages/Home/Home';
 // import { ServicesPage } from './pages/Services/Services';
-import { ThemeProvider } from './theme/ThemeContext';
-import { BreakpointProvider } from './theme/BreakpointContext';
+import { ThemeProvider } from './context/ThemeContext';
+import { BreakpointProvider } from './context/BreakpointContext';
 import './theme/index.css';
 import './theme/Theme2.css';
 // import './theme/GlobalStyles.css';
@@ -23,7 +23,7 @@ import './theme/Theme2.css';
 // };
 
 export function App() {
-  return (   
+  return (
     <BreakpointProvider>
     <ThemeProvider>
     <BrowserRouter>
@@ -31,7 +31,7 @@ export function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
           </Route>
-        </Routes>  
+        </Routes>
     </BrowserRouter>
     </ThemeProvider>
     </BreakpointProvider>

@@ -15,8 +15,8 @@ public class SpaController {
     
     // The Standard "Forward to Index" Pattern for Spring Boot + React:
     @RequestMapping(value = { 
-        "/{path:[^\\.]*}",           // Single level (e.g. /login)
-        "/**/{path:[^\\.]*}"         // Nested levels (e.g. /dashboard/settings)
+        "/{path:[^\\.]*}",           // Single level
+        "/**/{path:[^\\.]*}"         // Nested levels 
     }) 
     public String forward() {
         return "forward:/index.html";

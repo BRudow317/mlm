@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+export { ThemeProvider, useTheme };
 
 const ThemeContext = createContext(undefined);
 
@@ -11,7 +12,7 @@ function ThemeDomSync({ theme }) {
   return null;
 }
 
-export function ThemeProvider({ children }) {
+function ThemeProvider({ children }) {
   const [theme, setTheme] = useState("dark");
 
   const toggleTheme = () => {
@@ -28,7 +29,7 @@ export function ThemeProvider({ children }) {
   );
 }
 
-export function useTheme() {
+function useTheme() {
   const context = useContext(ThemeContext);
   if (!context) {
     throw new Error("useTheme must be used within a ThemeProvider");

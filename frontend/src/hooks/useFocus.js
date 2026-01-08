@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 
 /**
- * Track focus state for any element.
+ * @Description Track focus state for any element.
+ * 
+ * @returns {Object} - An object containing:
+ *   - ref: A callback ref to attach to the target element.
+ *   - isFocused: A boolean indicating whether the element is focused.
+ * 
  * @example
  * const { ref, isFocused } = useFocus();
  * return (
@@ -15,14 +20,14 @@ export function useFocus() {
   const [node, setNode] = useState(null);
 
   const ref = useCallback((element) => {
+    if (!element) {
+      setIsFocused(false);
+    }
     setNode(element);
   }, []);
 
   useEffect(() => {
-    if (!node) {
-      setIsFocused(false);
-      return undefined;
-    }
+    if (!node) return undefined;
 
     const onFocusIn = () => setIsFocused(true);
     const onFocusOut = () => setIsFocused(false);
@@ -34,7 +39,6 @@ export function useFocus() {
     return () => {
       node.removeEventListener("focusin", onFocusIn);
       node.removeEventListener("focusout", onFocusOut);
-      setIsFocused(false);
     };
   }, [node]);
 

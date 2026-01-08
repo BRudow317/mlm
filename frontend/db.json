@@ -1,4 +1,14 @@
 {
+  "contact": [
+    {
+      "id": 548977,
+      "name": "John Demo",
+      "email": "john.demo@example.com",
+      "phone": "5551234555",
+      "message": "This is a demo message from John Demo.",
+      "timestamp": "2024-10-01T10:15:30Z"
+    }
+  ] ,
   "JSONServer": {
     "commands": {
       "startupWindows": "npx json-server db.json --port 8008",
@@ -43,57 +53,6 @@
       "id": 1,
       "name": "Admin User",
       "role": "SuperAdmin"
-    }
-  ],
-  "address": [
-    {
-      "id": 1,
-      "street": "123 Forest Lane",
-      "city": "Woodsville",
-      "state": "OR",
-      "zip": "97035"
-    },
-    {
-      "id": "e950",
-      "streetAddress": "",
-      "aptSuite": "",
-      "city": "",
-      "stateProvince": "",
-      "postalCode": "",
-      "country": ""
-    },
-    {
-      "id": "9362",
-      "streetAddress": "123 ez st",
-      "aptSuite": "",
-      "city": "Indy",
-      "stateProvince": "MI",
-      "postalCode": "51555",
-      "country": "United States"
-    },
-    {
-      "id": "fc3b",
-      "streetAddress": "",
-      "city": "",
-      "stateProvince": "",
-      "postalCode": "",
-      "country": "United States"
-    },
-    {
-      "id": "6bfd",
-      "streetAddress": "",
-      "city": "",
-      "stateProvince": "",
-      "postalCode": "",
-      "country": "United States"
-    },
-    {
-      "id": "4653",
-      "streetAddress": "test",
-      "city": "test",
-      "stateProvince": "test",
-      "postalCode": "test",
-      "country": "United States"
     }
   ]
 }

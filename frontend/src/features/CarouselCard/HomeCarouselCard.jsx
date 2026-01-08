@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useCallback, useState, useEffect, useMemo, useRef } from "react";
 import { useTheme } from "../../../../theme/ThemeContext";
 import { CarouselStyles } from "./CarouselStyles";
 import * as CMI from "../../../../assets/CarouselMedia";
@@ -75,8 +75,8 @@ export const HomeCarouselCard = () => {
  */
 export const CarouselCard = ({
   items = [],
-  cardWidth = 400,
-  cardHeight = 300,
+  // cardWidth = 400,
+  // cardHeight = 300,
   autoPlay = true,
   autoPlayInterval = 3000,
 }) => {
@@ -143,9 +143,9 @@ export const CarouselCard = ({
   /**
    * Navigation handler - moves to next slide
    */
-  const goToNext = () => {
+  const goToNext = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % items.length);
-  };
+  }, [items.length]);
 
   /**
    * Navigation handler - moves to previous slide
@@ -157,9 +157,9 @@ export const CarouselCard = ({
   /**
    * Navigation handler - jumps to specific slide
    */
-  const goToSlide = (index) => {
-    setCurrentIndex(index);
-  };
+  // const goToSlide = (index) => {
+  //   setCurrentIndex(index);
+  // };
 
   /**
    * Auto-play effect
@@ -170,7 +170,8 @@ export const CarouselCard = ({
 
     const interval = setInterval(goToNext, autoPlayInterval);
     return () => clearInterval(interval);
-  }, [autoPlay, autoPlayInterval, items.length]); // intentional: no currentIndex
+  }, [autoPlay, autoPlayInterval, items.length, goToNext
+  ]); // intentional: no currentIndex
 
   /**
    * Lazy loading effect - loads current, previous, and next slides

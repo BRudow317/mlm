@@ -1,11 +1,12 @@
 // import * as HomeStyles from "../../HomeStyles.module.css";
-import {BreakpointContext} from "../../../../theme/BreakpointContext";
-import {useContext} from "react";
+// import {BreakpointContext} from "../../../../context/Breakpoint/BreakpointProvider";
+// import {useContext} from "react";
+import {useBreakpoint} from "../../../../context/BreakpointContext";
 import {useSmoothScroll} from "../../../../hooks/useSmoothScroll";
 export { HeroSection };
 
 function HeroSection() {
-  const screenSize = useContext(BreakpointContext);
+  const screenSize = useBreakpoint();
   const smoothScrollTo = useSmoothScroll();
 
   const handleQuoteClick = () => {

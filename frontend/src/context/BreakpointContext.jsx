@@ -1,9 +1,21 @@
-// BreakpointContext.js
-import { createContext, useState, useEffect, useContext } from "react";
+/**
+ * BreakpointContext.jsx
+ * @description
+ * Provides a React Context for managing and accessing screen size breakpoints.
+ * 
+ * @example
+ *  import { BreakpointProvider, useBreakpoint } from './BreakpointContext';
+ *  
+ *  const screenSize = useBreakpoint();
+ *  return <div>Current Screen Size: {screenSize}</div>;
+ */
 
-export {BreakpointContext, BreakpointProvider, getScreenSize, useBreakpoint};
+/* eslint-disable react-refresh/only-export-components */
+import { useState, useEffect, createContext, useContext } from "react";
 
-const BreakpointContext = createContext();
+export {BreakpointProvider, useBreakpoint};
+
+const BreakpointContext = createContext(undefined);
 
 const getScreenSize = () => {
   if (window.matchMedia("(width <= 480px)").matches) return "xsm";
@@ -35,5 +47,10 @@ function BreakpointProvider({ children }) {
 
 // Hook to use elsewhere
 function useBreakpoint() {
-  return useContext(BreakpointContext);
+  const context = useContext(BreakpointContext);
+    if (!context) {
+      throw new Error("useBreakpoint must be used within a BreakpointProvider");
+    }
+    return context;
 }
+

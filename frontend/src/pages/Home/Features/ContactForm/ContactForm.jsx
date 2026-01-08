@@ -1,9 +1,10 @@
 // ContactForm.jsx - Production Implementation
 import { useEffect, useState, useContext, useCallback } from "react";
 import { GoogleAddrAndMap } from "../../../../features/GoogleAddrAndMap/GoogleAddrAndMap";
-import { BreakpointContext } from "../../../../theme/BreakpointContext";
+import {useBreakpoint} from "../../../../context/BreakpointContext";
 import "./ContactFormStyles.css";
 export { ContactForm };
+
 // ============================================================================
 // CONFIGURATION
 // ============================================================================
@@ -67,21 +68,30 @@ const FORM_CONFIG = {
   
 };
 
-// ============================================================================
-// DEBOUNCE HOOK
-// ============================================================================
-function useDebounce(value, delay) {
-  const [debouncedValue, setDebouncedValue] = useState(value);
 
+
+// ============================================================================
+// MULTI-FIELD DEBOUNCE HOOK
+// ============================================================================
+function useFieldDebounces(config, activeFields, debounceTime, onValidate) {
   useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedValue(value);
-    }, delay);
-
-    return () => clearTimeout(handler);
-  }, [value, delay]);
-
-  return debouncedValue;
+    const timeouts = {};
+    
+    // Set up a timeout for each active field
+    Object.keys(config).forEach(fieldName => {
+      if (activeFields[fieldName]) {
+        timeouts[fieldName] = setTimeout(() => {
+          // Trigger validation callback after debounce completes
+          onValidate(fieldName);
+        }, debounceTime);
+      }
+    });
+    
+    // Cleanup: clear all timeouts if dependencies change (user keeps typing)
+    return () => {
+      Object.values(timeouts).forEach(clearTimeout);
+    };
+  }, [config, activeFields, debounceTime, onValidate]);
 }
 
 // ============================================================================
@@ -110,15 +120,6 @@ function useFormValidation(config) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
-  // Create debounced triggers for each field
-  const debouncedTriggers = {};
-  Object.keys(config).forEach(fieldName => {
-    debouncedTriggers[fieldName] = useDebounce(
-      activeFields[fieldName] ? Date.now() : null,
-      DEBOUNCE_TIME
-    );
-  });
-
   // Validate a single field
   const validateField = useCallback((fieldName, value = null) => {
     const fieldConfig = config[fieldName];
@@ -128,7 +129,7 @@ function useFormValidation(config) {
     return fieldConfig.validate(valueToValidate, formData);
   }, [config, formData]);
 
-  // Run validation and update state
+  // Run validation and update state (called after debounce completes)
   const runValidation = useCallback((fieldName) => {
     if (isSubmitted) return; // Don't validate if form is locked
 
@@ -144,34 +145,32 @@ function useFormValidation(config) {
       [fieldName]: error
     }));
 
+    // Cross-validate dependent fields if they're not active
+    const fieldConfig = config[fieldName];
+    if (fieldConfig.crossValidate) {
+      fieldConfig.crossValidate.forEach(dependentField => {
+        if (!activeFields[dependentField] && fieldStates[dependentField]) {
+          const dependentError = validateField(dependentField);
+          setFieldStates(prev => ({
+            ...prev,
+            [dependentField]: dependentError ? 'warning' : 'validated'
+          }));
+          setErrors(prev => ({
+            ...prev,
+            [dependentField]: dependentError
+          }));
+        }
+      });
+    }
+
+    // Mark field as no longer active
+    setActiveFields(prev => ({ ...prev, [fieldName]: false }));
+
     return error;
-  }, [validateField, isSubmitted]);
+  }, [validateField, isSubmitted, config, activeFields, fieldStates]);
 
-  // Handle debounced validation for each field
-  Object.keys(config).forEach(fieldName => {
-    const debouncedTrigger = debouncedTriggers[fieldName];
-    
-    
-    useEffect(() => {
-      if (debouncedTrigger === null) return;
-
-      // Validation runs ONLY ONCE after timer completes
-      runValidation(fieldName);
-
-      // Cross-validate dependent fields if they're not active
-      const fieldConfig = config[fieldName];
-      if (fieldConfig.crossValidate) {
-        fieldConfig.crossValidate.forEach(dependentField => {
-          if (!activeFields[dependentField] && fieldStates[dependentField]) {
-            runValidation(dependentField);
-          }
-        });
-      }
-
-      // Mark field as no longer active
-      setActiveFields(prev => ({ ...prev, [fieldName]: false }));
-    }, [debouncedTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
-  });
+  // Use the custom debounce hook for all fields
+  useFieldDebounces(config, activeFields, DEBOUNCE_TIME, runValidation);
 
   // Handle input change
   const handleChange = (e) => {
@@ -241,11 +240,9 @@ function useFormValidation(config) {
   };
 
   // Submit form
-  const submitForm = async () => {
+  const submitForm = async (payload) => {
     const isValid = validateForm();
     
-    // TODO: Set Error states on invalid fields
-    // TODO: Update UI to show text based reason for errors
     if (!isValid) {
       return false;
     }
@@ -257,12 +254,34 @@ function useFormValidation(config) {
     });
     setFieldStates(lockedStates);
     setIsSubmitted(true);
-    setShowSuccess(true);
 
-    // TODO: API call to save to session storage
-    // await saveToSessionStorage(formData);
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-    return true;
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
+
+      setShowSuccess(true);
+      return true;
+    } catch (error) {
+      console.error("Form submission error:", error);
+      // Unlock fields on error so user can try again
+      setFieldStates(prev => {
+        const unlockedStates = { ...prev };
+        Object.keys(config).forEach(fieldName => {
+          unlockedStates[fieldName] = errors[fieldName] ? 'warning' : 'validated';
+        });
+        return unlockedStates;
+      });
+      setIsSubmitted(false);
+      alert("Failed to submit form. Please try again.");
+      return false;
+    }
   };
 
   // Submit again - unlock fields
@@ -295,10 +314,10 @@ function useFormValidation(config) {
 // ============================================================================
 // COMPONENT
 // ============================================================================
-function ContactForm({ serviceType }) {
+function ContactForm() {
 
+  const screenSize = useBreakpoint();
 
-  const screenSize = useContext(BreakpointContext);
   const [GoogleAddressInput, GoogleMapBox, { location }] = GoogleAddrAndMap();
 
   const {
@@ -316,7 +335,11 @@ function ContactForm({ serviceType }) {
 
   // Handle form submission
   const handleSubmit = async () => {
-    await submitForm();
+    const payload = {
+      ...formData,
+      location: location, // Include Google Maps location data
+    };
+    await submitForm(payload);
   };
 
   // Render field helper
@@ -343,8 +366,6 @@ function ContactForm({ serviceType }) {
     if (isTextarea) {
       return <textarea {...commonProps} rows={fieldConfig.rows || 4} />;
     }
-
-
 
     return (
       <input
@@ -428,7 +449,7 @@ function ContactForm({ serviceType }) {
             <button
               type="button"
               onClick={submitAgain}
-              className="submit-button submit-again-button"
+              className="submit-again-button"
             >
               Submit Another Form?
             </button>

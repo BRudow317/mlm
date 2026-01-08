@@ -5,17 +5,18 @@
  *
  */
 
-import React, { useRef, useState, useContext, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import ServicesCarousel from "../ServicesCarousel/ServicesCarousel";
 import { SERVICE_OFFERINGS } from "../../../../constants/SERVICE_OFFERINGS";
 import { SERVICE_MEDIA_BY_ID } from "../../../../constants/SERVICE_MEDIA";
-import { BreakpointContext } from "../../../../theme/BreakpointContext";
+// import { BreakpointContext } from "../../../../context/Breakpoint/BreakpointProvider";
+import {useBreakpoint} from "../../../../context/BreakpointContext";
 // import styles from './Services.module.css';
 
 export { ServicesSection };
 
 function ServicesSection() {
-  const screenSize = useContext(BreakpointContext);
+  const screenSize = useBreakpoint();
 
   const [selectedService, setSelectedService] = useState(null);
   const [hoveredService, setHoveredService] = useState(null);
@@ -113,7 +114,6 @@ function ServicesSection() {
 
     sectionTitle: {
       margin: 0,
-      fontSize: "28px",
       color: "var(--text-color)",
       fontSize: "30px",
       lineHeight: "36px",

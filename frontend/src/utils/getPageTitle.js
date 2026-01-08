@@ -1,4 +1,19 @@
-export const getPageTitle = (item) => {
+/**
+ * @file getPageTitle.js
+ * @description Utility function to derive a page title from an item object or the current URL path.
+ * 
+ * @param {Object} item - An optional object that may contain 'label' or 'name' properties.
+ * @returns {string} - The derived page title.
+ * 
+ * @example
+ * const title = getPageTitle({ label: "Dashboard" });
+ * console.log(title); // Outputs: "Dashboard"
+ * const titleFromUrl = getPageTitle();
+ */
+
+export { getPageTitle };
+
+const getPageTitle = (item) => {
   if (item) {
     const name = item.label || item.name;
     if (name && typeof name === "string" && name.trim().length) return name;
