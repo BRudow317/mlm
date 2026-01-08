@@ -11,17 +11,22 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/contact")
-public class ContactApiController {
+@RequestMapping("/api/public/contact")
+public class ContactController {
     private final ContactService contactService;
 
-    public ContactApiController(ContactService contactService) {
+    public ContactController(ContactService contactService) {
         this.contactService = contactService;
     }
 
     @PostMapping
     public ResponseEntity<Map<String, Object>> submitContactForm(@RequestBody ContactSubmissionDTO submission) {
         try {
+            // Honeypot check
+            if (submission.getHoney() != null && !submission.getHoney().isEmpty()) {
+                return ResponseEntity.badRequest().build(); // Bot detected
+            }
+
             UUID contactId = contactService.saveContactSubmission(submission);
 
             Map<String, Object> response = new HashMap<>();

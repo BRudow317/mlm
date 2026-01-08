@@ -239,7 +239,7 @@ function useFormValidation(config) {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Submit form
+  // submit form
   const submitForm = async (payload) => {
     const isValid = validateForm();
     
@@ -256,7 +256,7 @@ function useFormValidation(config) {
     setIsSubmitted(true);
 
     try {
-      const response = await fetch("/api/contact", {
+      const response = await fetch("/api/public/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

@@ -31,5 +31,35 @@ public class HealthApiController {
         logger.info("Health check data received: " + body.toString());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    @RequestMapping(method = RequestMethod.OPTIONS)
+    public ResponseEntity<Map<String, Object>> listOptions() {
+        Map<String, Object> response = new HashMap<>();
+        response.put("api/health/", "OPTIONS");
+        response.put("api/health/", "GET");
+        response.put("api/health/", "POST");
+        response.put("api/health/", "PUT");
+        response.put("api/health/", "DELETE");
+
+        logger.info("Health check data updated: " + response.toString());
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PutMapping
+    public ResponseEntity<Map<String, Object>> updateHealthCheck(@RequestBody Map<String, Object> body) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("updated", body);
+        response.put("message", "Health check data updated");
+        logger.info("Health check data updated: " + body.toString());
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Map<String, Object>> deleteHealthCheck() {
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Health check data deleted");
+        logger.info("Health check data deleted");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 }
         
