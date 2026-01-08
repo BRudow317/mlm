@@ -11,7 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.security.config.Customizer;
+// import org.springframework.security.config.Customizer;
 
 /**
  * @Security configuration class to set up CSRF protection and request authorization.
@@ -35,18 +35,32 @@ public class SecurityConfig {
                 // .ignoringRequestMatchers("/api/contact/**")
                 .ignoringRequestMatchers("/api/public/**")
                 .ignoringRequestMatchers("/api/health/**")
-                .spa()
+                // .spa()
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/csrf").permitAll() // Allow access to CSRF token endpoint
-                .requestMatchers("/assets/**", "/dist/**", "/static/**").permitAll()
-                .requestMatchers("/", "/favicon.ico", "/index.html", "/manifest.json").permitAll()
+                .requestMatchers(
+                    "/",
+                    "/index.html",
+                    "/favicon.ico",
+                    "/assets/**",
+                    "/dist/**",
+                    "/static/**",
+                    "/*.js",
+                    "/*.css",
+                    "/*.png",
+                    "/*.jpg",
+                    "/*.svg",
+                    "/*.ico"
+                ).permitAll()
+                .requestMatchers("/csrf").permitAll()
+                .requestMatchers("/api/public/**").permitAll()
+                .requestMatchers("/api/health/**").permitAll()
                 .anyRequest().authenticated()
             )
             // .cors(Customizer.withDefaults())
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .formLogin(Customizer.withDefaults())
-            .logout((logout) -> logout.permitAll());
+            .httpBasic(httpBasic -> httpBasic.disable())
+            .formLogin(formLogin -> formLogin.disable());
 
         return http.build();
     }
@@ -54,7 +68,11 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedOrigins(List.of(
+            "http://localhost:5173",
+            "http://localhost:8080",
+            "https://miller-land-management.com"
+            ));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);

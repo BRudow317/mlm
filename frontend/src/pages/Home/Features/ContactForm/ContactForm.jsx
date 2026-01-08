@@ -2,6 +2,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { GoogleAddrAndMap } from "../../../../features/GoogleAddrAndMap/GoogleAddrAndMap";
 import {useBreakpoint} from "../../../../context/BreakpointContext";
+import {Honeypot} from "../../../../components/Honeypot/Honeypot";
 import "./ContactFormStyles.css";
 export { ContactForm };
 
@@ -13,7 +14,7 @@ const DEBOUNCE_TIME = 1200; // Tunable - will be refined in UX testing
 // Field validation configuration - Single source of truth
 const FORM_CONFIG = {
   name: {
-    label: "Full Name",
+    label: "Name",
     type: "text",
     placeholder: "Name",
     autoComplete: "name",
@@ -58,6 +59,18 @@ const FORM_CONFIG = {
     },
     crossValidate: ['email'],
   },
+  address: {
+    label: "Service Address",
+    type: "address", // Custom type for GoogleAddressInput
+    placeholder: "Type Address...",
+    autoComplete: "off",
+    required: false,
+    validate: (value) => {
+      // Address validation is handled by location object, not text value
+      // This will be overridden at validation time
+      return null;
+    },
+  },
   customMessage: {
     label: "Service Type",
     type: "textarea",
@@ -65,7 +78,7 @@ const FORM_CONFIG = {
     rows: 4,
     required: false,
   },
-  
+
 };
 
 
@@ -367,6 +380,18 @@ function ContactForm() {
       return <textarea {...commonProps} rows={fieldConfig.rows || 4} />;
     }
 
+    // if (fieldName==='address') {
+    //   return (
+    //     <GoogleAddressInput
+    //       autoComplete="off"
+    //       className="form-input form-input-with-icon"
+    //       {...commonProps}
+    //       data-validation-state={location?.lat && location?.lng ? 'validated' : 'default'}
+    //       disabled={isSubmitted}
+    //     />
+    //   );
+    // }
+
     return (
       <input
         {...commonProps}
@@ -403,7 +428,7 @@ function ContactForm() {
             );
           })}
         </div>
-
+        <Honeypot />
         {/* Address - Full Width */}
         <div className="field field-full-width">
           <label htmlFor="address" className="label">
@@ -414,7 +439,7 @@ function ContactForm() {
               className="form-input form-input-with-icon"
               data-validation-state={location?.lat && location?.lng ? 'validated' : 'default'}
               disabled={isSubmitted}
-            />
+            /> 
           </div>
         </div>
 

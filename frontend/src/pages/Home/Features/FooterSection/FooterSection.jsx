@@ -51,11 +51,8 @@ function FooterSection() {
     <>
       {/* Footer */}
       <footer style={styles.footer}>
-        <h3 style={styles.footerH3}>Miller Land Management</h3>
-        <p style={styles.footerP}>
-          Serving Indianapolis and surrounding areas with trusted excavation and
-          land management solutions.
-        </p>
+        {/* <h3 style={styles.footerH3}>Miller Land Management</h3> */}
+        {/* <p style={styles.footerP}></p> */}
 
         <div style={styles.footerNav}>
           <h4 style={styles.footerNavH4}>Miller Land Management LLC</h4>

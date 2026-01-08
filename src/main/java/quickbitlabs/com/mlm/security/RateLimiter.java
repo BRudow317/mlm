@@ -7,10 +7,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 // import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.stereotype.Component;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+@Component
 public class RateLimiter implements HandlerInterceptor {
     
     private final Map<String, List<Long>> requestCounts = new ConcurrentHashMap<>();
