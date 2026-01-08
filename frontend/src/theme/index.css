@@ -2,7 +2,8 @@
 
 /* Use border-box so padding doesn't break widths 
    Glob syntax targets all elements and their pseudo-elements
-*/
+   <link rel="stylesheet" href="/src/shared/styles/index.css" />
+*/    
 *, *::before, *::after {
   box-sizing: border-box;
 }

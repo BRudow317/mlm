@@ -5,91 +5,122 @@ info:
 servers:
   - url: /api
 paths:
-  /quote:
+  /contact:
     post:
-      summary: Submit a quote request
+      summary: Submit contact form
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/QuoteRequest'
+              $ref: '#/components/schemas/ContactSubmission'
       responses:
-        '200':
-          description: Quote request accepted
+        '201':
+          description: Contact submission received
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/QuoteResponse'
-  /auth/login:
+                $ref: '#/components/schemas/ContactResponse'
+        '500':
+          description: Server error while processing submission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /health:
+    get:
+      summary: Health check
+      responses:
+        '200':
+          description: Service is up
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthStatus'
     post:
-      summary: Login with username and password
+      summary: Submit health check data
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LoginRequest'
+              $ref: '#/components/schemas/HealthPayload'
       responses:
-        '200':
-          description: Login success
+        '201':
+          description: Health check data received
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LoginResponse'
-        '401':
-          description: Invalid credentials
-  /account/recover:
-    post:
-      summary: Send account recovery email
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RecoveryRequest'
-      responses:
-        '200':
-          description: Recovery email dispatched
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RecoveryResponse'
+                $ref: '#/components/schemas/HealthPostResponse'
 components:
   schemas:
-    QuoteRequest:
+    ContactSubmission:
       type: object
       properties:
-        name: { type: string }
-        email: { type: string }
-        address: { type: string }
-        phone: { type: string }
-        details: { type: string }
-        type: { type: string }
-      required: [name, email, details]
-    QuoteResponse:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        customMessage:
+          type: string
+        location:
+          $ref: '#/components/schemas/Location'
+    Location:
       type: object
       properties:
-        id: { type: string }
-        status: { type: string }
-        message: { type: string }
-    LoginRequest:
+        lat:
+          type: number
+          format: double
+        lng:
+          type: number
+          format: double
+        address:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        postalCode:
+          type: string
+        country:
+          type: string
+    ContactResponse:
       type: object
       properties:
-        username: { type: string }
-        password: { type: string }
-      required: [username, password]
-    LoginResponse:
+        success:
+          type: boolean
+        contactId:
+          type: string
+          format: uuid
+        message:
+          type: string
+    ErrorResponse:
       type: object
       properties:
-        token: { type: string }
-        username: { type: string }
-    RecoveryRequest:
+        success:
+          type: boolean
+          enum: [false]
+        message:
+          type: string
+        error:
+          type: string
+    HealthStatus:
       type: object
       properties:
-        email: { type: string }
-      required: [email]
-    RecoveryResponse:
+        status:
+          type: string
+          example: UP
+    HealthPayload:
+      type: object
+      description: Arbitrary JSON payload for health POST
+      additionalProperties: true
+    HealthPostResponse:
       type: object
       properties:
-        message: { type: string }
+        received:
+          $ref: '#/components/schemas/HealthPayload'
+        message:
+          type: string

@@ -15,6 +15,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+            .csrf(csrf -> csrf
+                // Disable CSRF for public API endpoints
+                .ignoringRequestMatchers("/api/contact/**")
+                .ignoringRequestMatchers("/api/public/**")
+                .ignoringRequestMatchers("/api/health/**")
+            )
             .authorizeHttpRequests((requests) -> requests
                 // 1. SECURE YOUR DATA (The most important part)
                 // Any request to the API requires login.
@@ -23,10 +29,13 @@ public class SecurityConfig {
                 
                 // 2. EXPLICIT PUBLIC API
                 .requestMatchers("/api/public/**").permitAll()
-
+                .requestMatchers("/api/contact/**").permitAll()
+                .requestMatchers("/api/health/**").permitAll()
                 // 3. ALLOW FRONTEND RESOURCES
                 // Allow Vite assets (hashed JS/CSS usually live here)
                 .requestMatchers("/assets/**").permitAll()
+                .requestMatchers("/dist/**").permitAll()
+                .requestMatchers("/static/**").permitAll()
                 // Allow root files
                 .requestMatchers("/favicon.ico", "/index.html", "/manifest.json").permitAll()
 
