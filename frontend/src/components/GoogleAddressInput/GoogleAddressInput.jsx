@@ -7,7 +7,6 @@
  * when entering location data.
  */
 
-import { TextInput } from "../../components";
 import { MapPin, Search, X } from "lucide-react";
 import styles from "./GoogleAddressInput.module.css";
 import { useGoogleAddressInput } from "./useGoogleAddressInput";
@@ -22,6 +21,7 @@ export function GoogleAddressInput({
   },
   style,
   className,
+  ...inputProps
 }) {
   
   const ac = useGoogleAddressInput({
@@ -40,6 +40,7 @@ export function GoogleAddressInput({
     ac.clearSuggestions();
   };
 
+
   return (
     <div >
       <Search size={18} className={styles.SearchIcon} aria-hidden="true" />
@@ -50,13 +51,14 @@ export function GoogleAddressInput({
         placeholder="Type Address..."
         value={ac.address}
         onChange={ac.handleAddressChange}
-        onBlur={ac.handleInputBlur}
         onKeyDown={ac.handleKeyDown}
+        onBlur={ac.handleInputBlur}
         className={`${styles.InputWithIcons} ${className || ''}`}
         style={style}
         aria-autocomplete="list"
         aria-controls={ac.listboxId}
         aria-expanded={hasSuggestions}
+        {...inputProps}
       />
 
       {showClearButton && (

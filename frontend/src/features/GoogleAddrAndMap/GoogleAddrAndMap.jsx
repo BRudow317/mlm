@@ -37,7 +37,9 @@ function GoogleAddrAndMap({
   const handleLocationSelected = useCallback(
     (loc) => {
       setLocation(loc);
-      onLocationSelected?.(loc);
+      if (onLocationSelected) {
+        onLocationSelected(loc);
+      }
     },
     [onLocationSelected]
   );
@@ -50,12 +52,13 @@ function GoogleAddrAndMap({
 
   // Return memoized component functions instead of JSX elements
   const AddressInputComponent = useMemo(() => {
-    const Component = memo(({ style, className }) => (
+    const Component = memo(({ style, className, ...props }) => (
       <GoogleAddressInput
         apiKey={apiKey}
         onLocationSelected={handleLocationSelected}
         style={style}
         className={className}
+        {...props}
       />
     ));
     Component.displayName = 'GoogleAddressInputWrapper';

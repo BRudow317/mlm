@@ -61,15 +61,10 @@ const FORM_CONFIG = {
   },
   address: {
     label: "Service Address",
-    type: "address", // Custom type for GoogleAddressInput
+    type: "google-address",
     placeholder: "Type Address...",
-    autoComplete: "off",
     required: false,
-    validate: (value) => {
-      // Address validation is handled by location object, not text value
-      // This will be overridden at validation time
-      return null;
-    },
+    validate: (value) => (!value.trim() ? "Address is required" : null),
   },
   customMessage: {
     label: "Service Type",
@@ -137,7 +132,7 @@ function useFormValidation(config) {
   const validateField = useCallback((fieldName, value = null) => {
     const fieldConfig = config[fieldName];
     if (!fieldConfig?.validate) return null;
-    
+
     const valueToValidate = value !== null ? value : formData[fieldName];
     return fieldConfig.validate(valueToValidate, formData);
   }, [config, formData]);
@@ -331,7 +326,7 @@ function ContactForm() {
 
   const screenSize = useBreakpoint();
 
-  const [GoogleAddressInput, GoogleMapBox, { location }] = GoogleAddrAndMap();
+  const [GoogleAddressInput, GoogleMapBox] = GoogleAddrAndMap();
 
   const {
     formData,
@@ -349,8 +344,7 @@ function ContactForm() {
   // Handle form submission
   const handleSubmit = async () => {
     const payload = {
-      ...formData,
-      location: location, // Include Google Maps location data
+      ...formData
     };
     await submitForm(payload);
   };
@@ -358,8 +352,8 @@ function ContactForm() {
   // Render field helper
   const renderField = (fieldName, fieldConfig) => {
     const isTextarea = fieldConfig.type === 'textarea';
-    const InputComponent = isTextarea ? 'textarea' : 'input';
     const state = fieldStates[fieldName] || 'default';
+    const isGoogleAddress = fieldConfig.type === 'google-address';
 
     const commonProps = {
       id: fieldName,
@@ -376,21 +370,26 @@ function ContactForm() {
       className: "form-input",
     };
 
+    if (isGoogleAddress) {
+      return (
+        <GoogleAddressInput
+          name="address"
+          value={formData.address}
+          onChange={handleChange}
+          onFocus={() => handleFieldAction("address")}
+          onBlur={() => handleBlur("address")}
+          onPaste={() => handleFieldAction("address")}
+          onCut={() => handleFieldAction("address")}
+          disabled={fieldStates.address === "locked"}
+          data-validation-state={fieldStates.address || "default"}
+          className="form-input form-input-with-icon"
+        />
+      );
+    }
+
     if (isTextarea) {
       return <textarea {...commonProps} rows={fieldConfig.rows || 4} />;
     }
-
-    // if (fieldName==='address') {
-    //   return (
-    //     <GoogleAddressInput
-    //       autoComplete="off"
-    //       className="form-input form-input-with-icon"
-    //       {...commonProps}
-    //       data-validation-state={location?.lat && location?.lng ? 'validated' : 'default'}
-    //       disabled={isSubmitted}
-    //     />
-    //   );
-    // }
 
     return (
       <input
@@ -429,7 +428,7 @@ function ContactForm() {
           })}
         </div>
         <Honeypot />
-        {/* Address - Full Width */}
+        {/* Address */}
         <div className="field field-full-width">
           <label htmlFor="address" className="label">
             Service Address
@@ -437,13 +436,11 @@ function ContactForm() {
           <div className="address-wrap">
             <GoogleAddressInput
               className="form-input form-input-with-icon"
-              data-validation-state={location?.lat && location?.lng ? 'validated' : 'default'}
-              disabled={isSubmitted}
-            /> 
+            />
           </div>
         </div>
 
-        {/* Service Type - Full Width */}
+        {/* Service Type */}
         <div className="field field-full-width">
           <label htmlFor="customMessage" className="label">
             {FORM_CONFIG.customMessage.label}
