@@ -1,0 +1,40 @@
+# Java
+target/
+*.class
+# VS Code
+.vscode/
+*.code-workspace
+.history/
+# Env
+.env
+*.env
+*.env.*
+# Docker
+docker-compose.override.yml
+# Documentation
+**/externalResources/
+ProjectDocs/
+# Logs
+**/bin/
+*.log
+**.log
+**/logs/
+logs/
+npm-debug.log
+yarn-error.log
+
+# Frontend
+frontend/dist/
+frontend/build/
+node_modules/
+dist/
+build/
+# Git
+*/.git/*
+.git/
+# Trash
+bin/
+Library/
+db.json
+middleware.cjs
+.devcontainer/

@@ -1,0 +1,24 @@
+/* Global Colors as CSS custom properties */
+
+/* Use border-box so padding doesn't break widths 
+   Glob syntax targets all elements and their pseudo-elements
+   <link rel="stylesheet" href="/src/shared/styles/index.css" />
+*/    
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  /* background-color: rgba(0, 0, 0, 1);
+  color: white; */
+}
+/* id="root" === #root */
+#root {
+  isolation: isolate;
+  /* min-height: 100vh; */
+}
