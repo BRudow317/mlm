@@ -1,15 +1,34 @@
-// ContactForm.jsx - Production Implementation
+/**
+ * @file ContactForm.jsx
+ * 
+ * @description A contact form component with integrated Google Address Selection and validation.
+ * 
+ * @summary Outputs the form for the home page. The GoogleAddrSelMap is an array of components and they have
+ * to have their state managed here. 
+ * 
+ * @Bugs Bad UX - The components are supposed to have timers independent of one another. But they share the same debounce timer.
+ * The timer resets on any field change, so if you are typing in one field and then type in another field before the timer ends,
+ * the first field's timer resets. This means that if you are filling out multiple fields, the validation may never trigger
+ * until you stop typing for all fields for the debounce duration. Which defeats the purpose of validating while the user 
+ * fills out the form, showing them errors in near real-time.
+ * 
+ * @Bug Error State is not working. Fields that should be red on submit are not red.
+ * 
+ * @todo Improve UX - Separate debounce timers for each field.
+ * @todo Improve UX - Show a spinner or some indicator that validation is in progress.
+ * @todo Improve Accessibility - Ensure all form elements are fully accessible.
+ * @todo Clean up the code, it could take awhile, the form is brittle at best. State is very delicately managed.
+ * 
+ */
 import { useEffect, useState, useCallback } from "react";
-import { GoogleAddrAndMap } from "../../../../features/GoogleAddrAndMap/GoogleAddrAndMap";
+import { GoogleAddrSelMap } from "../../../../features/GoogleAddrSelMap/GoogleAddrSelMap";
 import {useBreakpoint} from "../../../../context/BreakpointContext";
-import {Honeypot} from "../../../../components/Honeypot/Honeypot";
+import {Honeypot, useHoneypot} from "../../../../components/Honeypot/Honeypot";
 import "./ContactFormStyles.css";
 export { ContactForm };
 
-// ============================================================================
 // CONFIGURATION
-// ============================================================================
-const DEBOUNCE_TIME = 1200; // Tunable - will be refined in UX testing
+const DEBOUNCE_TIME = 2000;
 
 // Field validation configuration - Single source of truth
 const FORM_CONFIG = {
@@ -61,7 +80,7 @@ const FORM_CONFIG = {
   },
   address: {
     label: "Service Address",
-    type: "google-address",
+    type: "google-select",
     placeholder: "Type Address...",
     required: false,
     validate: (value) => (!value.trim() ? "Address is required" : null),
@@ -78,9 +97,9 @@ const FORM_CONFIG = {
 
 
 
-// ============================================================================
+
 // MULTI-FIELD DEBOUNCE HOOK
-// ============================================================================
+
 function useFieldDebounces(config, activeFields, debounceTime, onValidate) {
   useEffect(() => {
     const timeouts = {};
@@ -89,7 +108,6 @@ function useFieldDebounces(config, activeFields, debounceTime, onValidate) {
     Object.keys(config).forEach(fieldName => {
       if (activeFields[fieldName]) {
         timeouts[fieldName] = setTimeout(() => {
-          // Trigger validation callback after debounce completes
           onValidate(fieldName);
         }, debounceTime);
       }
@@ -102,9 +120,7 @@ function useFieldDebounces(config, activeFields, debounceTime, onValidate) {
   }, [config, activeFields, debounceTime, onValidate]);
 }
 
-// ============================================================================
-// FORM VALIDATION HOOK
-// ============================================================================
+
 function useFormValidation(config) {
   // Form data
   const [formData, setFormData] = useState(() => {
@@ -121,7 +137,7 @@ function useFormValidation(config) {
   // Validation errors
   const [errors, setErrors] = useState({});
 
-  // Track which fields are actively being edited (for debouncing)
+  // active fields being edited
   const [activeFields, setActiveFields] = useState({});
 
   // Form submission state
@@ -264,7 +280,8 @@ function useFormValidation(config) {
     setIsSubmitted(true);
 
     try {
-      const response = await fetch("/api/public/contact", {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+      const response = await fetch(`${apiUrl}/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -296,13 +313,32 @@ function useFormValidation(config) {
   const submitAgain = () => {
     setIsSubmitted(false);
     setShowSuccess(false);
-    
+
     // Reset all locked fields to their validated state
     const unlockedStates = {};
     Object.keys(config).forEach(fieldName => {
       unlockedStates[fieldName] = errors[fieldName] ? 'warning' : 'validated';
     });
     setFieldStates(unlockedStates);
+  };
+
+  // Handle address selection from GoogleAddressInput (uncontrolled component)
+  const handleAddressSelected = (fieldName, address) => {
+    if (isSubmitted) return;
+
+    // Update form data
+    setFormData(prev => ({ ...prev, [fieldName]: address }));
+
+    // Validate the selected address
+    const error = validateField(fieldName, address);
+    setFieldStates(prev => ({
+      ...prev,
+      [fieldName]: error ? 'warning' : 'validated'
+    }));
+    setErrors(prev => ({
+      ...prev,
+      [fieldName]: error
+    }));
   };
 
   return {
@@ -316,17 +352,19 @@ function useFormValidation(config) {
     handleBlur,
     submitForm,
     submitAgain,
+    handleAddressSelected,
   };
 }
 
-// ============================================================================
+
 // COMPONENT
-// ============================================================================
+
 function ContactForm() {
 
   const screenSize = useBreakpoint();
 
-  const [GoogleAddressInput, GoogleMapBox] = GoogleAddrAndMap();
+
+  const [GoogleSelectInput, GoogleMapBox] = GoogleAddrSelMap();
 
   const {
     formData,
@@ -339,12 +377,26 @@ function ContactForm() {
     handleBlur,
     submitForm,
     submitAgain,
+    handleAddressSelected,
   } = useFormValidation(FORM_CONFIG);
+
+  // Honeypot bot detection
+  const { honeypotValue, handleHoneypotChange, isBotDetected } = useHoneypot((value) => {
+    console.warn('Bot detected - honeypot field filled with:', value);
+  });
 
   // Handle form submission
   const handleSubmit = async () => {
+    // Block submission if bot is detected
+    if (isBotDetected) {
+      console.warn('Form submission blocked - bot detected');
+      // Silently fail for bots - don't give them feedback
+      return;
+    }
+
     const payload = {
-      ...formData
+      ...formData,
+      website: honeypotValue, // Include honeypot for backend validation
     };
     await submitForm(payload);
   };
@@ -353,8 +405,33 @@ function ContactForm() {
   const renderField = (fieldName, fieldConfig) => {
     const isTextarea = fieldConfig.type === 'textarea';
     const state = fieldStates[fieldName] || 'default';
-    const isGoogleAddress = fieldConfig.type === 'google-address';
+    const isGoogleSelect = fieldConfig.type === 'google-select';
 
+    // NEW: Fully controlled GoogleSelectInput
+    if (isGoogleSelect) {
+      return (
+        <GoogleSelectInput
+          id={fieldName}
+          name={fieldName}
+          value={formData[fieldName] || ""}
+          onChange={handleChange}
+          onFocus={() => handleFieldAction(fieldName)}
+          onBlur={() => handleBlur(fieldName)}
+          onPaste={() => handleFieldAction(fieldName)}
+          onCut={() => handleFieldAction(fieldName)}
+          onSelectionChange={(location) => {
+            // Use existing handler (validates and updates state)
+            handleAddressSelected(fieldName, location.address);
+          }}
+          placeholder={fieldConfig.placeholder}
+          disabled={state === 'locked'}
+          data-validation-state={state}
+          className="form-input form-input-with-icon"
+        />
+      );
+    }
+
+    // Standard controlled inputs (text, email, phone, textarea)
     const commonProps = {
       id: fieldName,
       name: fieldName,
@@ -369,23 +446,6 @@ function ContactForm() {
       'data-validation-state': state,
       className: "form-input",
     };
-
-    if (isGoogleAddress) {
-      return (
-        <GoogleAddressInput
-          name="address"
-          value={formData.address}
-          onChange={handleChange}
-          onFocus={() => handleFieldAction("address")}
-          onBlur={() => handleBlur("address")}
-          onPaste={() => handleFieldAction("address")}
-          onCut={() => handleFieldAction("address")}
-          disabled={fieldStates.address === "locked"}
-          data-validation-state={fieldStates.address || "default"}
-          className="form-input form-input-with-icon"
-        />
-      );
-    }
 
     if (isTextarea) {
       return <textarea {...commonProps} rows={fieldConfig.rows || 4} />;
@@ -427,17 +487,17 @@ function ContactForm() {
             );
           })}
         </div>
-        <Honeypot />
-        {/* Address */}
+        <Honeypot value={honeypotValue} onChange={handleHoneypotChange} />
+
+        {/* Address (GoogleSelectInput) */}
         <div className="field field-full-width">
           <label htmlFor="address" className="label">
-            Service Address
+            {FORM_CONFIG.address.label}
+            {errors.address && (
+              <span className="error">{errors.address}</span>
+            )}
           </label>
-          <div className="address-wrap">
-            <GoogleAddressInput
-              className="form-input form-input-with-icon"
-            />
-          </div>
+          {renderField('address', FORM_CONFIG.address)}
         </div>
 
         {/* Service Type */}

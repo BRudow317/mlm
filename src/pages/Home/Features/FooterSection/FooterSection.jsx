@@ -6,7 +6,6 @@ function FooterSection() {
   const styles = {
     /* Footer */
     footer: {
-      /* background-color: #0a0a0a; */
       padding: `60px 20px`,
       borderTop: `1px solid #222`,
       background: `var(--tint-75)`
@@ -51,16 +50,13 @@ function FooterSection() {
     <>
       {/* Footer */}
       <footer style={styles.footer}>
-        {/* <h3 style={styles.footerH3}>Miller Land Management</h3> */}
-        {/* <p style={styles.footerP}></p> */}
-
         <div style={styles.footerNav}>
           <h4 style={styles.footerNavH4}>Miller Land Management LLC</h4>
           <a href={`mailto:${CONTACT_INFO.EMAIL}`} style={styles.footerNavA}>Owner: {CONTACT_INFO.OWNER}</a>
           <a href={`tel:${CONTACT_INFO.PHONE}`} style={styles.footerNavA}>Phone Number: {CONTACT_INFO.PHONE}</a>
           <a href={`mailto:${CONTACT_INFO.EMAIL}`} style={styles.footerNavA}>Email: {CONTACT_INFO.EMAIL}</a>
           <a href={CONTACT_INFO.FACEBOOK} style={styles.footerNavA}>Facebook: Miller Land Management</a>
-          <a href={`https://miller-land-management.com`} style={styles.footerNavA}>Domain: miller-land-management.com</a>
+          <a href={`https://millerlandman.com`} style={styles.footerNavA}>Domain: millerlandman.com</a>
         </div>
       </footer>
     </>

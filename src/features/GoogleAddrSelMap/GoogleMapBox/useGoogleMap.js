@@ -18,7 +18,7 @@
  */
 
 import { useEffect, useRef, useState, useMemo } from "react";
-import { loadGoogleMapsScript } from "../../utils/loadGoogleMapsScript";
+import { loadGoogleMapsScript } from "./loadGoogleMapsScript";
 
 export function useGoogleMap({
   apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || null,

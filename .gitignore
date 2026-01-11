@@ -7,7 +7,7 @@ target/
 .history/
 # Env
 .env
-*.env
+.env.*
 *.env.*
 # Docker
 docker-compose.override.yml

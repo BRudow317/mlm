@@ -209,6 +209,7 @@ input:-webkit-autofill {
 
 .form-input-with-icon {
   padding-left: 40px;
+  padding-right: 40px;
 }
 
 /* ============================================================================

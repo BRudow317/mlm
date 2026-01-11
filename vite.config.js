@@ -5,6 +5,17 @@ import react from '@vitejs/plugin-react-swc'
 export default defineConfig({
   plugins: [react()],
   server: {
+    allowedHosts: [
+      "quickbitlabs.com",
+      "www.quickbitlabs.com",
+      "cloudvoyages.com",
+      "www.cloudvoyages.com",
+      "millerlandman.com",
+      "www.millerlandman.com",
+      "miller-land-management.com",
+      "www.miller-land-management.com",
+    ],
+    // port: 6050,
     watch: {
       ignored: ['**/bin/**','**/lib/**','**/logs/**','**/node_modules/**','**/.git/**','**/build/**'],
     },

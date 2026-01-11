@@ -1,11 +1,12 @@
 import { Outlet } from "react-router-dom";
 import { AdBar } from "../features/AdBar/AdBar";
 import MlmBanner from "../assets/MlmBanner.jpg";
+import {useBreakpoint} from "../context/BreakpointContext";
 
-
-//App children will be the routed pages
-//Pages should use fragments if they want to use "MainSection" as their wrapper.
 export function Layout() {
+  const screenSize = useBreakpoint();
+  const isMobile = screenSize === "xsm" || screenSize === "sm";
+
   const styles = {
     SiteContainer: {
       width: "100%",
@@ -13,7 +14,7 @@ export function Layout() {
       padding: 0,
       margin: 0,
       boxSizing: "border-box",
-      
+
     },
 
     AppContainer: {
@@ -38,7 +39,8 @@ export function Layout() {
       margin: 0,
 
       backgroundImage: `url(${MlmBanner})`,
-      backgroundAttachment: "fixed",
+      // Mobile: scroll with page, Desktop: fixed parallax effect
+      backgroundAttachment: isMobile ? "scroll" : "fixed",
       backgroundSize: "contain",
       backgroundRepeat: "no-repeat",
       backgroundPosition: "50% 20%",
