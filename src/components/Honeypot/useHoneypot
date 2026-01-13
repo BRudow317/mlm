@@ -3,6 +3,7 @@
  * @param {function} onBotDetected - Optional callback when bot is detected
  * @returns {object} { honeypotValue, handleHoneypotChange, isBotDetected }
  */
+import React from "react";
 
 export function useHoneypot(onBotDetected) {
     const [honeypotValue, setHoneypotValue] = React.useState("");

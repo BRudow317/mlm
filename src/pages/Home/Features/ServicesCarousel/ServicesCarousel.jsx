@@ -124,6 +124,7 @@ function ServicesCarousel({
             className={cx(styles.image, imageClassName)}
             src={activeImage.src}
             alt={activeImage.alt ?? ''}
+            loading="lazy"
           />
         ) : (
           <div className={styles.emptyState}>No images available</div>

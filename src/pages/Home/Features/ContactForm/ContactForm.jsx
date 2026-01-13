@@ -23,7 +23,8 @@
 import { useEffect, useState, useCallback } from "react";
 import { GoogleAddrSelMap } from "../../../../features/GoogleAddrSelMap/GoogleAddrSelMap";
 import {useBreakpoint} from "../../../../context/BreakpointContext";
-import {Honeypot, useHoneypot} from "../../../../components/Honeypot/Honeypot";
+import {Honeypot} from "../../../../components/Honeypot/Honeypot";
+import {useHoneypot} from "../../../../components/Honeypot/useHoneypot";
 import {supabase} from "../../../../features/Supabase/supabase";
 import "./ContactFormStyles.css";
 export { ContactForm };
