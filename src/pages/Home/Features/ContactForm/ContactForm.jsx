@@ -84,7 +84,7 @@ const FORM_CONFIG = {
     type: "google-select",
     placeholder: "Type Address...",
     required: false,
-    validate: (value, formData) => {
+    validate: (value) => {
       // Only validate if the field is marked as required
       if (FORM_CONFIG.address.required && !value.trim()) {
         return "Address is required";

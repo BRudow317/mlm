@@ -73,7 +73,7 @@ function GoogleAddrSelMap({
         />
       );
     };
-    Component.displayName = "GoogleSelectInputWrapper";
+    // Component.displayName = "GoogleSelectInputWrapper";
     return Component;
   }, [apiKey, handleInternalLocationSelected]);
 
@@ -88,7 +88,7 @@ function GoogleAddrSelMap({
         className={className}
       />
     );
-    Component.displayName = "GoogleMapBoxWrapper";
+    // Component.displayName = "GoogleMapBoxWrapper";
     return Component;
   }, [apiKey, mapId, center]);
 

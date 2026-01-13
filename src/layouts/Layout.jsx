@@ -1,11 +1,11 @@
 import { Outlet } from "react-router-dom";
 import { AdBar } from "../features/AdBar/AdBar";
 import MlmBanner from "../assets/MlmBanner.jpg";
-import {useBreakpoint} from "../context/BreakpointContext";
+// import {useBreakpoint} from "../context/BreakpointContext";
 
 export function Layout() {
-  const screenSize = useBreakpoint();
-  const isMobile = screenSize === "xsm" || screenSize === "sm";
+  // const screenSize = useBreakpoint();
+  // const isMobile = screenSize === "xsm" || screenSize === "sm";
 
   const styles = {
     SiteContainer: {
