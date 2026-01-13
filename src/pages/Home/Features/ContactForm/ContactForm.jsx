@@ -24,6 +24,7 @@ import { useEffect, useState, useCallback } from "react";
 import { GoogleAddrSelMap } from "../../../../features/GoogleAddrSelMap/GoogleAddrSelMap";
 import {useBreakpoint} from "../../../../context/BreakpointContext";
 import {Honeypot, useHoneypot} from "../../../../components/Honeypot/Honeypot";
+import {supabase} from "../../../../features/Supabase/supabase";
 import "./ContactFormStyles.css";
 export { ContactForm };
 
@@ -83,7 +84,13 @@ const FORM_CONFIG = {
     type: "google-select",
     placeholder: "Type Address...",
     required: false,
-    validate: (value) => (!value.trim() ? "Address is required" : null),
+    validate: (value, formData) => {
+      // Only validate if the field is marked as required
+      if (FORM_CONFIG.address.required && !value.trim()) {
+        return "Address is required";
+      }
+      return null;
+    },
   },
   customMessage: {
     label: "Service Type",
@@ -264,6 +271,52 @@ function useFormValidation(config) {
   };
 
   // submit form
+  // const submitForm = async (payload) => {
+  //   const isValid = validateForm();
+    
+  //   if (!isValid) {
+  //     return false;
+  //   }
+
+  //   // Lock all fields (green, disabled)
+  //   const lockedStates = {};
+  //   Object.keys(config).forEach(fieldName => {
+  //     lockedStates[fieldName] = 'locked';
+  //   });
+  //   setFieldStates(lockedStates);
+  //   setIsSubmitted(true);
+
+  //   try {
+  //     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+  //     const response = await fetch(`${apiUrl}/contact`, {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify(payload),
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error(`API error: ${response.status}`);
+  //     }
+
+  //     setShowSuccess(true);
+  //     return true;
+  //   } catch (error) {
+  //     console.error("Form submission error:", error);
+  //     // Unlock fields on error so user can try again
+  //     setFieldStates(prev => {
+  //       const unlockedStates = { ...prev };
+  //       Object.keys(config).forEach(fieldName => {
+  //         unlockedStates[fieldName] = errors[fieldName] ? 'warning' : 'validated';
+  //       });
+  //       return unlockedStates;
+  //     });
+  //     setIsSubmitted(false);
+  //     alert("Failed to submit form. Please try again.");
+  //     return false;
+  //   }
+  // };
+
+  // submit form
   const submitForm = async (payload) => {
     const isValid = validateForm();
     
@@ -280,19 +333,42 @@ function useFormValidation(config) {
     setIsSubmitted(true);
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
-      const response = await fetch(`${apiUrl}/contact`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      //const { supabase } = await import('../../../../features/Supabase/supabase');
+      
+      const { error } = await supabase
+        .from('Contacts')
+        .insert({
+          name: payload.name,
+          email: payload.email,
+          phone: payload.phone,
+          address: payload.address,
+          message: payload.message,
+        });
 
-      if (!response.ok) {
-        throw new Error(`API error: ${response.status}`);
+      if (error) {
+        throw new Error(`Supabase error: ${error.message}`);
       }
 
-      setShowSuccess(true);
-      return true;
+      // Send email notification
+  await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      service_id: import.meta.env.VITE_EMAILJS_SERVICE_ID,
+      template_id: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+      user_id: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
+      template_params: {
+        name: payload.name,
+        email: payload.email,
+        phone: payload.phone,
+        address: payload.address,
+        message: payload.message,
+      },
+    }),
+  });
+
+  setShowSuccess(true);
+  return true;
     } catch (error) {
       console.error("Form submission error:", error);
       // Unlock fields on error so user can try again
@@ -308,6 +384,7 @@ function useFormValidation(config) {
       return false;
     }
   };
+
 
   // Submit again - unlock fields
   const submitAgain = () => {
@@ -396,7 +473,7 @@ function ContactForm() {
 
     const payload = {
       ...formData,
-      website: honeypotValue, // Include honeypot for backend validation
+      honeypot: honeypotValue, // Include honeypot for backend validation
     };
     await submitForm(payload);
   };

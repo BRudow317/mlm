@@ -31,16 +31,11 @@ export function Layout() {
       isolation: "isolate",
       zIndex: -5,
       position: "fixed",
-      width: "100%",
-      height: "100%",
-      top: 0,
-      left: 0,
+      inset: 0,
       padding: 0,
       margin: 0,
-
       backgroundImage: `url(${MlmBanner})`,
-      // Mobile: scroll with page, Desktop: fixed parallax effect
-      backgroundAttachment: isMobile ? "scroll" : "fixed",
+      backgroundAttachment: "scroll",
       backgroundSize: "contain",
       backgroundRepeat: "no-repeat",
       backgroundPosition: "50% 20%",

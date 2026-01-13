@@ -41,7 +41,7 @@ function useHoneypot(onBotDetected) {
  * @param {function} onChange - Change handler from parent (optional, for controlled mode)
  * @param {string} fieldName - Name attribute for the field (default: "website")
  */
-function Honeypot({ value, onChange, fieldName = "website" }) {
+function Honeypot({ value, onChange, fieldName = "contact_me_by_fax_only" }) {
     return (
         <input
             type="text"
@@ -57,7 +57,7 @@ function Honeypot({ value, onChange, fieldName = "website" }) {
                 pointerEvents: 'none',
             }}
             tabIndex="-1"
-            autoComplete="off"
+            autoComplete="new-password"
             aria-hidden="true"
         />
     );
